@@ -353,7 +353,6 @@ if selected == "Email Header Analyzer":
 
     # Render the custom CSS styles
     st.markdown(custom_css, unsafe_allow_html=True)
-    <div class="download-message">
     def extract_header_details(msg):
         # Extract message ID
         message_id = msg.get('Message-ID')
@@ -515,7 +514,6 @@ if selected == "Email Header Analyzer":
                 '<div class="spam-headers">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
         else:
             st.write('No attachments found in the email.')
-        </div>
 
 
 ############################################################################################################################################################################################################################################################################################################################
