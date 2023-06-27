@@ -19,6 +19,7 @@ import requests
 from geopy.geocoders import Nominatim
 import socket
 nltk.download('punkt')
+nltk.download('stopwords')
 from nltk.stem.porter import PorterStemmer
 
 ps = PorterStemmer()
