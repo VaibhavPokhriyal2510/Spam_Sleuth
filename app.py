@@ -333,13 +333,27 @@ if selected == "Email Header Analyzer":
         .table tr:hover {
             background-color: #F5F5F5;
         }
+        .download-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: #000000; /* Update text color to white */
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: Trebuchet MS;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
     </style>
     """
 
     # Render the custom CSS styles
     st.markdown(custom_css, unsafe_allow_html=True)
-
+    <div class="download-message">
     def extract_header_details(msg):
         # Extract message ID
         message_id = msg.get('Message-ID')
@@ -463,7 +477,7 @@ if selected == "Email Header Analyzer":
         from_domain = re.search('@[\w.-]+', from_address).group()
         st.markdown('<div class="banner">Sender Information</div>',
                     unsafe_allow_html=True)
-        st.write('<div class="spam-headers">From Domain:</div>', from_domain, unsafe_allow_html=True)
+        st.write('From Domain:', from_domain, unsafe_allow_html=True)
 
         # Display the IP addresses
         st.markdown('<div class="banner">IP Addresses</div>',
@@ -501,6 +515,7 @@ if selected == "Email Header Analyzer":
                 '<div class="spam-headers">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
         else:
             st.write('No attachments found in the email.')
+        </div>
 
 
 ############################################################################################################################################################################################################################################################################################################################
