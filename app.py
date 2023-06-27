@@ -478,7 +478,7 @@ if selected == "Email Header Analyzer":
         from_domain = re.search('@[\w.-]+', from_address).group()
         st.markdown('<div class="banner">Sender Information</div>',
                     unsafe_allow_html=True)
-        st.write('From Domain:', from_domain)
+        st.write('<div class="spam-headers">From Domain:</div>', from_domain,unsafe_allow_html=True)
 
         # Display the IP addresses
         st.markdown('<div class="banner">IP Addresses</div>',
