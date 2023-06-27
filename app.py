@@ -300,13 +300,14 @@ if selected == "Email Header Analyzer":
             background-color: #F5F5F5;
             border-radius: 5px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            color: #000000;
         }
 
         .result-header {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-            color: white; /* Update text color to white */
+            color: #000000; /* Update text color to white */
         }
 
         .table {
@@ -314,7 +315,7 @@ if selected == "Email Header Analyzer":
             border-collapse: collapse;
             width: 100%;
             background-color: white;
-            color: black; /* Update text color to white */
+            color: #000000; /* Update text color to white */
         }
 
         .table th,
@@ -326,7 +327,7 @@ if selected == "Email Header Analyzer":
 
         .table th {
             background-color: white;
-            color: black;
+            color: #000000;
         }
 
         .table tr:hover {
@@ -338,7 +339,7 @@ if selected == "Email Header Analyzer":
             justify-content: center;
             align-items: center;
             background-color: black;
-            color: black; /* Update text color to white */
+            color: #000000; /* Update text color to white */
             padding: 10px;
             margin-top: 20px;
             border-radius: 5px;
