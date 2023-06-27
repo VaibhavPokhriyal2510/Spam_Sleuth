@@ -63,6 +63,9 @@ with st.sidebar:
                     padding-bottom: 3.5rem;
                     padding-left: 1rem;
                 }
+                .sidebar .sidebar-content {
+                    background-color: #ECF0F1;
+                }
         </style>
         """, unsafe_allow_html=True)
 
