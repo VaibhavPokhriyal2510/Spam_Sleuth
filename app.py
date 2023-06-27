@@ -18,6 +18,7 @@ import base64
 import requests
 from geopy.geocoders import Nominatim
 import socket
+nltk.download('punkt')
 from nltk.stem.porter import PorterStemmer
 
 ps = PorterStemmer()
