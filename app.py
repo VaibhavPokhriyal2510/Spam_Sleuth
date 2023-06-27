@@ -186,7 +186,7 @@ if selected == "Spam Mail Detector":
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #F5F5F5;
+            background-color: gray;
             border-radius: 5px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
