@@ -314,7 +314,7 @@ if selected == "Email Header Analyzer":
             border-collapse: collapse;
             width: 100%;
             background-color: white;
-            color: white; /* Update text color to white */
+            color: black; /* Update text color to white */
         }
 
         .table th,
@@ -326,7 +326,7 @@ if selected == "Email Header Analyzer":
 
         .table th {
             background-color: white;
-            color: white;
+            color: black;
         }
 
         .table tr:hover {
@@ -337,8 +337,8 @@ if selected == "Email Header Analyzer":
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: white;
-            color: white; /* Update text color to white */
+            background-color: black;
+            color: black; /* Update text color to white */
             padding: 10px;
             margin-top: 20px;
             border-radius: 5px;
