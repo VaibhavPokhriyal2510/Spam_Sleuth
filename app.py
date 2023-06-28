@@ -123,7 +123,7 @@ if selected == "Home":
     st.markdown(banner_css + content_css, unsafe_allow_html=True)
 
     # Display the banner
-    st.markdown('<div class="banner">WELCOME TO SPAM SLEUTH</div>',
+    st.markdown('<div class="banner">WELCOME TO EMAIL SPAM SLEUTH</div>',
                 unsafe_allow_html=True)
     
     st.markdown(
