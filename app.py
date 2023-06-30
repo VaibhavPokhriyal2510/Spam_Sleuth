@@ -17,6 +17,8 @@ import ipaddress
 import base64
 import requests
 import urllib.parse
+import nltk
+nltk.download('punkt')
 from geopy.geocoders import Nominatim
 import socket
 from nltk.stem.porter import PorterStemmer
