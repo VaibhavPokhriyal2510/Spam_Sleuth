@@ -351,7 +351,7 @@ if selected == "Email Header Analyzer":
             justify-content: center;
             align-items: center;
             background-color: white;
-            color: white; /* Update text color to white */
+            color: black; /* Update text color to white */
             padding: 10px;
             margin-top: 20px;
             border-radius: 5px;
@@ -424,7 +424,6 @@ if selected == "Email Header Analyzer":
                 if part.get_content_disposition() and part.get_content_disposition().startswith('attachment'):
                     filename = part.get_filename()
                     attachments.append(filename)
-                    save_attachment(part, filename)
 
         return message_id, from_address, to_address, cc_address, bcc_address, date, subject, arc_result, spf_status, dmarc_status, dkim_status, ip_addresses, attachments
 
@@ -524,6 +523,12 @@ if selected == "Email Header Analyzer":
         if attachments:
             for attachment in attachments:
                 st.write(attachment)
+            # Create a download link for each attachment
+                href = f"data:text/plain;charset=utf-8,{urllib.parse.quote(attachment)}"
+                st.markdown(
+                f'<a href="{href}" download="{attachment}">Download {attachment}</a>',
+                unsafe_allow_html=True
+                )
             st.markdown(
                 '<div class="download-message">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
         else:
