@@ -523,12 +523,9 @@ if selected == "Email Header Analyzer":
         if attachments:
             for attachment in attachments:
                 st.write(attachment)
-            # Create a download link for each attachment
+        # Create a download link for each attachment
                 href = f"data:text/plain;charset=utf-8,{urllib.parse.quote(attachment)}"
-                st.markdown(
-                f'<a href="{href}" download="{attachment}">Download {attachment}</a>',
-                unsafe_allow_html=True
-                )
+                st.markdown( f'<a href="{href}" download="{attachment}">Download {attachment}</a>',unsafe_allow_html=True)
             st.markdown(
                 '<div class="download-message">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
         else:
