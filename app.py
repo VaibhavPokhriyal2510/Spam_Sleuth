@@ -152,12 +152,20 @@ if selected == "Home":
 if selected == "Spam Message Detector":
     import pymysql
 
+    # Retrieve database credentials from environment variables
+    DB_USERNAME = os.environ.get('DB_USERNAME')
+    DB_PORT = int(os.environ.get('DB_PORT', 3306))
+    DB_HOST = os.environ.get('DB_HOST')
+    DB_PWD = os.environ.get('DB_PWD')
+    DB_NAME = os.environ.get('DB_NAME')
+
+    # Establish a connection to the database
     connection = pymysql.connect(
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USERNAME,
+        password=DB_PWD,
+        database=DB_NAME
     )
 
     cursor = connection.cursor()
@@ -994,15 +1002,17 @@ if selected == "Analysis":
     import pandas as pd
     import plotly.graph_objects as go
     from streamlit_option_menu import option_menu 
+    from dotenv import load_dotenv
 
-    conn = mysql.connector.connect (
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
+    load_dotenv()
+
+    conn = mysql.connector.connect(
+    host=os.getenv('DB_HOST'),
+    user=os.getenv('DB_USERNAME'),
+    password=os.getenv('DB_PWD'),
+    database=os.getenv('DB_NAME'),
+    port=int(os.getenv('DB_PORT'))
     )
-
     c=conn.cursor ()
 
     def view_all_data():
