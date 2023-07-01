@@ -981,7 +981,7 @@ if selected == "Analysis":
     conn = mysql.connector.connect (
     host='localhost',  # Replace with your host name
     user='root',  # Replace with your username
-    password='',  # Replace with your password
+    password='root',  # Replace with your password
     database='Spam_Sleuth',  # Replace with your database name
     port=3306
     )
