@@ -19,6 +19,7 @@ import requests
 import mysql.connector
 import pandas as pd
 import plotly.graph_objects as go
+import pymysql
 from streamlit_option_menu import option_menu
 import urllib.parse
 import nltk
