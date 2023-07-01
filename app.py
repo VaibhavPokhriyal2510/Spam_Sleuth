@@ -238,7 +238,7 @@ if selected == "Spam Message Detector":
             food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry','order']
             technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
             fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
-            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'team', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
+            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
             # Add 10 more words to each sector
             educational_keywords.extend(['scholarship', 'online', 'university', 'studyabroad', 'academic', 'knowledge', 'classroom', 'homework', 'lecture', 'assignment'])
             medical_keywords.extend(['healthcare', 'wellbeing', 'pharmaceutical', 'medicalresearch', 'medicine', 'wellness', 'patientcare', 'preventive', 'disease', 'rehabilitation'])
