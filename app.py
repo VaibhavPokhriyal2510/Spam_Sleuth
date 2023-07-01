@@ -16,6 +16,10 @@ import dns.resolver
 import ipaddress
 import base64
 import requests
+import mysql.connector
+import pandas as pd
+import plotly.graph_objects as go
+from streamlit_option_menu import option_menu
 import urllib.parse
 import nltk
 nltk.download('punkt')
