@@ -73,7 +73,7 @@ with st.sidebar:
     selected = option_menu(
         menu_title=None,
         options=["Home", "Spam Mail Detector",
-                 "Email Header Analyzer", "IP Tracker", "IP Lookup", "Contact Us"],
+                 "Email Header Analyzer", "IP Tracker", "IP Lookup", "Analysis","Contact Us"],
         default_index=0,
         menu_icon="cast"
     )
@@ -150,105 +150,171 @@ if selected == "Home":
 
 ###########################################################################################################################################################################################################################################################################################################################
 
-if selected == "Spam Mail Detector":
+if selected == "Spam Message Detector":
+    import pymysql
 
-    def transform_text(text):
-        text = text.lower()
-        text = nltk.word_tokenize(text)
+    connection = pymysql.connect(
+    host='localhost',  # Replace with your host name
+    user='root',  # Replace with your username
+    password='',  # Replace with your password
+    database='Spam_Sleuth',  # Replace with your database name
+    port=3306
+    )
 
-        y = []
-        for i in text:
-            if i.isalnum():
-                y.append(i)
+    cursor = connection.cursor()
 
-        text = y[:]
-        y.clear()
+    st.markdown('<div style="display: flex; justify-content: center; align-items: center; background-color: #000000; color: white; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-size: 28px; font-family: Trebuchet MS; font-weight: bold; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">WELCOME TO SPAM MESSAGE DETECTOR</div>', unsafe_allow_html=True)
 
-        for i in text:
-            if i not in stopwords.words('english') and i not in string.punctuation:
-                y.append(i)
+    add_selectbox = st.selectbox("Please select the type of message you want to detect.",
+    ("None","Email", "Mobile Phone"),index=0)
 
-        text = y[:]
-        y.clear()
+    if add_selectbox == "Email":
 
-        for i in text:
-            y.append(ps.stem(i))
+        def transform_text(text):
+            text = text.lower()
+            text = nltk.word_tokenize(text)
 
-        return " ".join(y)
+            y = []
+            for i in text:
+                if i.isalnum():
+                    y.append(i)
+
+            text = y[:]
+            y.clear()
+
+            for i in text:
+                if i not in stopwords.words('english') and i not in string.punctuation:
+                    y.append(i)
+
+            text = y[:]
+            y.clear()
+
+            for i in text:
+                y.append(ps.stem(i))
+
+            return " ".join(y)
 
     # Custom CSS styles for the banner
-    banner_css = """
-    <style>
-        .banner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000000;
-            color: white;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 28px;
-            font-family: Trebuchet MS;
-            font-weight: bold;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-    """
+        banner_css = """
+        <style>
+            .banner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #000000;
+                color: white;
+                padding: 10px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                font-size: 28px;
+                font-family: Trebuchet MS;
+                font-weight: bold;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+        """
 
     # Custom CSS styles for the main content
-    content_css = """
-    <style>
-        .content {
+        content_css = """
+        <style>
+            .content {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
             background-color: #F5F5F5;
             border-radius: 5px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
+            }
     
-        .result-header {
+            .result-header {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-        }
-    </style>
-    """
+            }
+        </style>
+        """
 
     # Render the custom CSS styles
-    st.markdown(banner_css + content_css, unsafe_allow_html=True)
+        st.markdown(banner_css + content_css, unsafe_allow_html=True)
 
-    # Display the banner
-    st.markdown('<div class="banner">WELCOME TO SPAM MESSAGE DETECTOR</div>',
-                unsafe_allow_html=True)
+
+        def categorize_sector(message):
+    # Convert the message to lowercase for case-insensitive matching
+            message = message.lower()
+
+    # Define keywords for each sector
+            educational_keywords = ['education', 'learn', 'study', 'school','Academic' ,'Degree', 'Institution', 'Education', 'Assessment', 'Certification', 'Coaching', 'Course', 'Course']
+            medical_keywords = ['health', 'doctor', 'hospital', 'medicine']
+            business_keywords = ['business', 'company', 'entrepreneur', 'product']
+            advertisement_keywords = ['promotion', 'discount', 'sale', 'offer']
+            travel_keywords=['travel', 'vacation', 'holiday', 'tourism', 'hotel', 'flight', 'destination', 'explore']
+            food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry','order']
+            technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
+            fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
+            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'team', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
+            # Add 10 more words to each sector
+            educational_keywords.extend(['scholarship', 'online', 'university', 'studyabroad', 'academic', 'knowledge', 'classroom', 'homework', 'lecture', 'assignment'])
+            medical_keywords.extend(['healthcare', 'wellbeing', 'pharmaceutical', 'medicalresearch', 'medicine', 'wellness', 'patientcare', 'preventive', 'disease', 'rehabilitation'])
+            business_keywords.extend(['entrepreneurship', 'investor', 'leadership', 'management', 'businessgrowth', 'marketanalysis', 'startup', 'entrepreneurial', 'businessplan', 'innovation'])
+            advertisement_keywords.extend(['discounts', 'exclusiveoffers', 'shopping', 'limitedtime', 'clearance', 'dealoftheday', 'promotional', 'marketingcampaign', 'brandpromotion', 'shopnow'])
+            travel_keywords.extend(['traveldestination', 'adventure', 'holidaypackage', 'touristattraction', 'travelguide', 'exploretheworld', 'travelagency', 'sightseeingtour', 'vacationrental', 'traveler'])
+            food_keywords.extend(['restaurantreview', 'cookingtips', 'foodblog', 'culinaryarts', 'foodphotography', 'foodlover', 'tastetest', 'foodculture', 'foodcritic', 'foodtrend'])
+            technology_keywords.extend(['innovativetechnology', 'datascience', 'programmingskills', 'techindustry', 'networksecurity', 'artificialintelligence', 'cybersecurity', 'digitaltransformation', 'technologytrends', 'cloudcomputing'])
+            fashion_keywords.extend(['fashiondesigner', 'fashionshow', 'luxuryfashion', 'fashionaccessories', 'fashionblogger', 'fashionindustry', 'stylingtips', 'fashionweek', 'fashionbrand', 'fashioninspiration'])
+            sports_keywords.extend(['sportsmanship', 'sportstraining', 'sportsnutrition', 'sportsinjury', 'sportspsychology', 'sportsperformance', 'sportscoach', 'sportsfan', 'sportsenthusiast', 'sportsevent'])
+
+    # Check if any keyword is present in the message
+            if any(keyword in message for keyword in educational_keywords):
+                return 'Educational'
+            elif any(keyword in message for keyword in medical_keywords):
+                return 'Medical'
+            elif any(keyword in message for keyword in business_keywords):
+                return 'Business'
+            elif any(keyword in message for keyword in advertisement_keywords):
+                return 'Advertisement'
+            elif any(keyword in message for keyword in travel_keywords):
+                return 'Travel'
+            elif any(keyword in message for keyword in food_keywords):
+                return 'Food Advertisement'
+            elif any(keyword in message for keyword in technology_keywords):
+                return 'Technology'
+            elif any(keyword in message for keyword in fashion_keywords):
+                return 'Faishon'
+            elif any(keyword in message for keyword in sports_keywords):
+                return 'Sports'
+            else:
+                return 'uncategorized'
 
     # Load the pre-trained model and vectorizer
-    tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
-    model = pickle.load(open('model2.pkl', 'rb'))
+        tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
+        model = pickle.load(open('model2.pkl', 'rb'))
 
-    input_sms = st.text_area("Enter the message", key="input_sms", height=150, max_chars=None,
+        input_sms = st.text_area("Enter the message", key="input_sms", height=150, max_chars=None,
                              help="Type your message here")
 
-    if st.button('Predict', key="predict_button", help="Click to predict"):
-        if input_sms.strip() == "":
-            st.warning("Please enter something")
-        else:
+        if st.button('Predict', key="predict_button", help="Click to predict"):
+            if input_sms.strip() == "":
+                st.warning("Please enter something")
+            else:
             # Preprocess the input text
-            transformed_sms = transform_text(input_sms)
+                transformed_sms = transform_text(input_sms)
 
         # Vectorize the preprocessed text
-            vector_input = tfidf.transform([transformed_sms])
+                vector_input = tfidf.transform([transformed_sms])
 
         # Perform prediction
-            result = model.predict(vector_input)[0]
+                result = model.predict(vector_input)[0]
+                sector = categorize_sector(input_sms)
+                query = "INSERT INTO messages (content, is_spam, sector) VALUES (%s, %s,%s)"
+                cursor.execute(query, (input_sms, result, sector))
+                connection.commit()
 
         # Display the result
-            if result == 1:
-                st.markdown(
-                    """
-                <style>
-                .spam-header {
+                if result == 1:
+                    st.markdown(
+                        """
+                    <style>
+                    .spam-header {
                     color: #00080a;
                     font-size: 28px;
                     font-weight: bold;
@@ -257,17 +323,18 @@ if selected == "Spam Mail Detector":
                     font-family: Trebuchet MS;
                     background-color: #ff5252;
                     border-radius: 5px;
-                }
-                </style>
-                """, unsafe_allow_html=True
-                )
-                st.markdown(
+                    }
+                    </style>
+                    """, unsafe_allow_html=True
+                    )
+                    st.markdown(
                     '<h1 class="spam-header">Be Careful!! It\'s A Spam</h1>', unsafe_allow_html=True)
-            elif result == 0:
-                st.markdown(
-                    """
-                <style>
-                .not-spam-header {
+                    st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #ff5252;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
+                elif result == 0:
+                    st.markdown(
+                        """
+                    <style>
+                    .not-spam-header {
                     color: #00080a;
                     font-size: 28px;
                     font-weight: bold;
@@ -276,12 +343,151 @@ if selected == "Spam Mail Detector":
                     font-family: Trebuchet MS;
                     background-color: #b9f6ca;
                     border-radius: 5px;
-                }
-                </style>
-                """, unsafe_allow_html=True
-                )
-                st.markdown(
+                    }
+                    </style>
+                    """, unsafe_allow_html=True
+                    )
+                    st.markdown(
                     '<h1 class="not-spam-header">It\'s Not A Spam</h1>', unsafe_allow_html=True)
+                    st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #b9f6ca;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
+
+                
+    if add_selectbox == "Mobile Phone":
+
+        def transform_text(text):
+            text = text.lower()
+            text = nltk.word_tokenize(text)
+
+            y = []
+            for i in text:
+                if i.isalnum():
+                    y.append(i)
+
+            text = y[:]
+            y.clear()
+
+            for i in text:
+                if i not in stopwords.words('english') and i not in string.punctuation:
+                    y.append(i)
+
+            text = y[:]
+            y.clear()
+
+            for i in text:
+                y.append(ps.stem(i))
+
+            return " ".join(y)
+
+    # Custom CSS styles for the banner
+        banner_css = """
+        <style>
+            .banner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #000000;
+                color: white;
+                padding: 10px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                font-size: 28px;
+                font-family: Trebuchet MS;
+                font-weight: bold;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+        """
+
+    # Custom CSS styles for the main content
+        content_css = """
+        <style>
+            .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F5F5F5;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+    
+            .result-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            }
+        </style>
+        """
+
+    # Render the custom CSS styles
+        st.markdown(banner_css + content_css, unsafe_allow_html=True)
+
+    # Load the pre-trained model and vectorizer
+        tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
+        model = pickle.load(open('model2.pkl', 'rb'))
+
+        input_sms = st.text_area("Enter the message", key="input_sms", height=150, max_chars=None,
+                             help="Type your message here")
+
+        if st.button('Predict', key="predict_button", help="Click to predict"):
+            if input_sms.strip() == "":
+                st.warning("Please enter something")
+            else:
+            # Preprocess the input text
+                transformed_sms = transform_text(input_sms)
+
+        # Vectorize the preprocessed text
+                vector_input = tfidf.transform([transformed_sms])
+
+        # Perform prediction
+                result = model.predict(vector_input)[0]
+                query = "INSERT INTO messages (content, is_spam) VALUES (%s, %s)"
+                cursor.execute(query, (input_sms, result))
+                connection.commit()
+
+        # Display the result
+                if result == 1:
+                    st.markdown(
+                        """
+                    <style>
+                    .spam-header {
+                    color: #00080a;
+                    font-size: 28px;
+                    font-weight: bold;
+                    text-align: center;
+                    padding: 10px;
+                    font-family: Trebuchet MS;
+                    background-color: #ff5252;
+                    border-radius: 5px;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True
+                    )
+                    st.markdown(
+                    '<h1 class="spam-header">Be Careful!! It\'s A Spam.Please Block The User</h1>', unsafe_allow_html=True)
+                    st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #ff5252;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
+                elif result == 0:
+                    st.markdown(
+                        """
+                    <style>
+                    .not-spam-header {
+                    color: #00080a;
+                    font-size: 28px;
+                    font-weight: bold;
+                    text-align: center;
+                    padding: 10px;
+                    font-family: Trebuchet MS;
+                    background-color: #b9f6ca;
+                    border-radius: 5px;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True
+                    )
+                    st.markdown(
+                    '<h1 class="not-spam-header">It\'s Not A Spam</h1>', unsafe_allow_html=True)
+                    st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #b9f6ca;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
+
+                connection.close()
+
 
 
 # Hide Streamlit's default footer
@@ -781,3 +987,103 @@ if selected == "Contact Us":
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     local_css("style.css")
+
+
+
+########################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+if selected == "Analysis":
+    import mysql.connector
+    import pandas as pd
+    import plotly.graph_objects as go
+    from streamlit_option_menu import option_menu 
+
+    conn = mysql.connector.connect (
+    host='localhost',  # Replace with your host name
+    user='root',  # Replace with your username
+    password='',  # Replace with your password
+    database='Spam_Sleuth',  # Replace with your database name
+    port=3306
+    )
+
+    c=conn.cursor ()
+
+    def view_all_data():
+        c.execute ('select * from messages')
+        data=c.fetchall ()
+        return data
+
+    result=view_all_data()
+    df=pd.DataFrame (result, columns=["content","is_spam","sector"])
+    # Display a bar chart of the sector distribution
+    banner_css = """
+    <style>
+        .banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 28px;
+            font-family: Trebuchet MS;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .contact-form button[type="submit"]:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+    """
+    st.markdown(banner_css , unsafe_allow_html=True)
+    st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>',
+                unsafe_allow_html=True)
+    sector_counts = df['sector'].value_counts()
+    st.bar_chart(sector_counts)
+
+    st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>',
+                unsafe_allow_html=True)
+    spam_counts = df['is_spam'].value_counts()
+
+    fig = go.Figure(data=[go.Pie(labels=spam_counts.index, values=spam_counts.values)])
+    st.plotly_chart(fig)
+
+    # Count the number of spam and non-spam messages for each sector
+    spam_counts = df[df['is_spam'] == 1].groupby('sector')['is_spam'].count()
+    non_spam_counts = df[df['is_spam'] == 0].groupby('sector')['is_spam'].count()
+
+# Create a bar chart to visualize the spam and non-spam counts for each sector
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=spam_counts.index, y=spam_counts.values, name='Spam'))
+    fig.add_trace(go.Bar(x=non_spam_counts.index, y=non_spam_counts.values, name='Non-Spam'))
+    st.markdown('<div class="banner">SPAM V/S NON-SPAM COUNT BY SECTOR</div>',
+                unsafe_allow_html=True)
+    fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
+    st.plotly_chart(fig)
+
+    # Create a line graph to visualize the spam and non-spam counts for each sector
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+    x=spam_counts.index,
+    y=spam_counts.values,
+    mode='lines+markers',
+    name='Spam'
+    ))
+
+    fig.add_trace(go.Scatter(
+    x=non_spam_counts.index,
+    y=non_spam_counts.values,
+    mode='lines+markers',
+    name='Non-Spam'
+    ))
+
+    fig.update_layout(
+    title='Spam vs Non-Spam Count by Sector',
+    xaxis_title='Sector',
+    yaxis_title='Count',
+    )
+
+    st.plotly_chart(fig)    
