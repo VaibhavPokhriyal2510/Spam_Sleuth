@@ -150,18 +150,6 @@ if selected == "Home":
 ###########################################################################################################################################################################################################################################################################################################################
 
 if selected == "Spam Message Detector":
-    import pymysql
-
-    connection = pymysql.connect(
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='root',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
-    )
-
-    cursor = connection.cursor()
-
     st.markdown('<div style="display: flex; justify-content: center; align-items: center; background-color: #000000; color: white; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-size: 28px; font-family: Trebuchet MS; font-weight: bold; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">WELCOME TO SPAM MESSAGE DETECTOR</div>', unsafe_allow_html=True)
 
     add_selectbox = st.selectbox("Please select the type of message you want to detect.",
@@ -304,10 +292,7 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
-                query = "INSERT INTO messages (content, is_spam, sector) VALUES (%s, %s,%s)"
-                cursor.execute(query, (input_sms, result, sector))
-                connection.commit()
-
+            
         # Display the result
                 if result == 1:
                     st.markdown(
@@ -484,8 +469,6 @@ if selected == "Spam Message Detector":
                     st.markdown(
                     '<h1 class="not-spam-header">It\'s Not A Spam</h1>', unsafe_allow_html=True)
                     st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #b9f6ca;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
-
-                connection.close()
 
 
 
