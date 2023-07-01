@@ -10,3 +10,4 @@ streamlit-option-menu==0.3.6
 mysql-connector-python
 plotly
 pymysql
+python-dotenv
