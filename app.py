@@ -1001,15 +1001,15 @@ if selected == "Analysis":
     import pandas as pd
     import plotly.graph_objects as go
     from streamlit_option_menu import option_menu 
+    config = {
+    'host': 'localhost',
+    'port': 3306,
+    'user': 'root',
+    'password': '',
+    'database': 'Spam_Sleuth'
+    }
 
-    conn = mysql.connector.connect (
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
-    )
-
+    conn = mysql.connector.connect(**config)
     c=conn.cursor ()
 
     def view_all_data():
