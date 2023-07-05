@@ -1020,7 +1020,6 @@ if selected == "Analysis":
     </style>
     """
     st.markdown(banner_css, unsafe_allow_html=True)
-    st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     
     # Retrieve data from Redis
     messages = connection.lrange('messages', 0, -1)
@@ -1041,5 +1040,5 @@ if selected == "Analysis":
 
     # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
-    sector_counts = df_messages['sector'].value_counts()
+    sector_counts = df_messages['sectors'].value_counts()
     st.bar_chart(sector_counts)
