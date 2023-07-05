@@ -1052,11 +1052,11 @@ if selected == "Analysis":
 
 
     # Spam vs non-spam count by sector
-    spam_counts = df_combined[df_results['results'] == 1].groupby('sectors')['results'].count()
-    non_spam_counts = df_combined[df_results['results'] == 0].groupby('sectors')['results'].count()
+    spam_counts_by_sector = df_results[df_results['results'] == 1].merge(df_sectors, left_index=True, right_index=True)['sectors'].value_counts()
+    non_spam_counts_by_sector = df_results[df_results['results'] == 0].merge(df_sectors, left_index=True, right_index=True)['sectors'].value_counts()
 
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=spam_counts.index, y=spam_counts.values, name='Spam'))
-    fig.add_trace(go.Bar(x=non_spam_counts.index, y=non_spam_counts.values, name='Non-Spam'))
+    fig.add_trace(go.Bar(x=spam_counts_by_sector.index, y=spam_counts_by_sector.values, name='Spam'))
+    fig.add_trace(go.Bar(x=non_spam_counts_by_sector.index, y=non_spam_counts_by_sector.values, name='Non-Spam'))
     fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.plotly_chart(fig)
