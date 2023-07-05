@@ -8,6 +8,8 @@ from streamlit_option_menu import option_menu
 import pickle
 import string
 from nltk.corpus import stopwords
+nltk.download('punkt')
+nltk.download('stopwords')
 import nltk
 import email
 import re
