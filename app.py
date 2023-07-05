@@ -286,7 +286,7 @@ if selected == "Spam Message Detector":
         tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
         model = pickle.load(open('model2.pkl', 'rb'))
 
-        input_sms = st.text_area("Enter the message", key="input_sms", height=150, max_chars=None,
+        input_sms = st.text_area("Enter the Email message", key="input_sms", height=150, max_chars=None,
                              help="Type your message here")
 
         if st.button('Predict', key="predict_button", help="Click to predict"):
@@ -424,7 +424,7 @@ if selected == "Spam Message Detector":
         tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
         model = pickle.load(open('model2.pkl', 'rb'))
 
-        input_sms = st.text_area("Enter the message", key="input_sms", height=150, max_chars=None,
+        input_sms = st.text_area("Enter the mobile message", key="input_sms", height=150, max_chars=None,
                              help="Type your message here")
 
         if st.button('Predict', key="predict_button", help="Click to predict"):
@@ -439,7 +439,11 @@ if selected == "Spam Message Detector":
 
         # Perform prediction
                 result = model.predict(vector_input)[0]
-                query = "INSERT INTO messages (content, is_spam) VALUES (%s, %s)"
+                
+                # Store the data in Redis list
+                connection.lpush('messages', input_sms)
+                connection.lpush('results', str(result))
+                connection.lpush('sectors', sector)
         
 
         # Display the result
@@ -736,7 +740,7 @@ if selected == "Email Header Analyzer":
                     f'<a href="{href}" download="{attachment}">Download {attachment}</a>',
                     unsafe_allow_html=True)
             st.markdown(
-                '<div class="download-message">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
+                '<div class="download-message">Please Click The Link To Download Your Attachment(s).</div>', unsafe_allow_html=True)
         else:
             st.write('No attachments found in the email.')
 
