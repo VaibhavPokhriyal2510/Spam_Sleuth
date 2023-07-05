@@ -8,8 +8,6 @@ from streamlit_option_menu import option_menu
 import pickle
 import string
 from nltk.corpus import stopwords
-nltk.download('punkt')
-nltk.download('stopwords')
 import nltk
 import email
 import re
@@ -22,6 +20,8 @@ import urllib.parse
 import nltk
 from geopy.geocoders import Nominatim
 import socket
+nltk.download('punkt')
+nltk.download('stopwords')
 from nltk.stem.porter import PorterStemmer
 
 ps = PorterStemmer()
