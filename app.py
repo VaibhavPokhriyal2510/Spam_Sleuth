@@ -1051,8 +1051,8 @@ if selected == "Analysis":
 
 
     # Spam vs non-spam count by sector
-    spam_counts = df_messages[df_messages['is_spam'] == 1].groupby('sector')['is_spam'].count()
-    non_spam_counts = df_messages[df_messages['is_spam'] == 0].groupby('sector')['is_spam'].count()
+    spam_counts = df_messages[df_messages['is_spam'] == 1].groupby('sectors')['results'].count()
+    non_spam_counts = df_messages[df_messages['is_spam'] == 0].groupby('sectors')['results'].count()
 
     fig = go.Figure()
     fig.add_trace(go.Bar(x=spam_counts.index, y=spam_counts.values, name='Spam'))
