@@ -985,7 +985,6 @@ if selected == "Contact Us":
     local_css("style.css")
 
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################
-
 if selected == "Analysis":
     import os
     import redis
@@ -1020,9 +1019,9 @@ if selected == "Analysis":
         }
     </style>
     """
-    st.markdown(banner_css , unsafe_allow_html=True)
-    st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>',
-                unsafe_allow_html=True)
+    st.markdown(banner_css, unsafe_allow_html=True)
+    st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
+    
     # Retrieve data from Redis
     data = connection.lrange('messages', 0, -1)
     result = [eval(d.decode()) for d in data]
@@ -1051,23 +1050,23 @@ if selected == "Analysis":
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(
-    x=spam_counts.index,
-    y=spam_counts.values,
-    mode='lines+markers',
-    name='Spam'
+        x=spam_counts.index,
+        y=spam_counts.values,
+        mode='lines+markers',
+        name='Spam'
     ))
 
     fig.add_trace(go.Scatter(
-    x=non_spam_counts.index,
-    y=non_spam_counts.values,
-    mode='lines+markers',
-    name='Non-Spam'
+        x=non_spam_counts.index,
+        y=non_spam_counts.values,
+        mode='lines+markers',
+        name='Non-Spam'
     ))
 
     fig.update_layout(
-    title='Spam vs Non-Spam Count by Sector',
-    xaxis_title='Sector',
-    yaxis_title='Count',
+        title='Spam vs Non-Spam Count by Sector',
+        xaxis_title='Sector',
+        yaxis_title='Count'
     )
 
     st.plotly_chart(fig)
