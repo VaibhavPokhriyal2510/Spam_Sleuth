@@ -420,6 +420,54 @@ if selected == "Spam Message Detector":
     # Render the custom CSS styles
         st.markdown(banner_css + content_css, unsafe_allow_html=True)
 
+        def categorize_sector(message):
+    # Convert the message to lowercase for case-insensitive matching
+            message = message.lower()
+
+    # Define keywords for each sector
+            educational_keywords = ['education', 'learn', 'study', 'school','Academic' ,'Degree', 'Institution', 'Education', 'Assessment', 'Certification', 'Coaching', 'Course', 'Course']
+            medical_keywords = ['health', 'doctor', 'hospital', 'medicine']
+            business_keywords = ['business', 'company', 'entrepreneur', 'product']
+            advertisement_keywords = ['promotion', 'discount', 'sale', 'offer']
+            travel_keywords=['travel', 'vacation', 'holiday', 'tourism', 'hotel', 'flight', 'destination', 'explore']
+            food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry','order']
+            technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
+            fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
+            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
+            # Add 10 more words to each sector
+            educational_keywords.extend(['scholarship', 'online', 'university', 'studyabroad', 'academic', 'knowledge', 'classroom', 'homework', 'lecture', 'assignment'])
+            medical_keywords.extend(['healthcare', 'wellbeing', 'pharmaceutical', 'medicalresearch', 'medicine', 'wellness', 'patientcare', 'preventive', 'disease', 'rehabilitation'])
+            business_keywords.extend(['entrepreneurship', 'investor', 'leadership', 'management', 'businessgrowth', 'marketanalysis', 'startup', 'entrepreneurial', 'businessplan', 'innovation'])
+            advertisement_keywords.extend(['discounts', 'exclusiveoffers', 'shopping', 'limitedtime', 'clearance', 'dealoftheday', 'promotional', 'marketingcampaign', 'brandpromotion', 'shopnow'])
+            travel_keywords.extend(['traveldestination', 'adventure', 'holidaypackage', 'touristattraction', 'travelguide', 'exploretheworld', 'travelagency', 'sightseeingtour', 'vacationrental', 'traveler'])
+            food_keywords.extend(['restaurantreview', 'cookingtips', 'foodblog', 'culinaryarts', 'foodphotography', 'foodlover', 'tastetest', 'foodculture', 'foodcritic', 'foodtrend'])
+            technology_keywords.extend(['innovativetechnology', 'datascience', 'programmingskills', 'techindustry', 'networksecurity', 'artificialintelligence', 'cybersecurity', 'digitaltransformation', 'technologytrends', 'cloudcomputing'])
+            fashion_keywords.extend(['fashiondesigner', 'fashionshow', 'luxuryfashion', 'fashionaccessories', 'fashionblogger', 'fashionindustry', 'stylingtips', 'fashionweek', 'fashionbrand', 'fashioninspiration'])
+            sports_keywords.extend(['sportsmanship', 'sportstraining', 'sportsnutrition', 'sportsinjury', 'sportspsychology', 'sportsperformance', 'sportscoach', 'sportsfan', 'sportsenthusiast', 'sportsevent'])
+
+    # Check if any keyword is present in the message
+            if any(keyword in message for keyword in educational_keywords):
+                return 'Educational'
+            elif any(keyword in message for keyword in medical_keywords):
+                return 'Medical'
+            elif any(keyword in message for keyword in business_keywords):
+                return 'Business'
+            elif any(keyword in message for keyword in advertisement_keywords):
+                return 'Advertisement'
+            elif any(keyword in message for keyword in travel_keywords):
+                return 'Travel'
+            elif any(keyword in message for keyword in food_keywords):
+                return 'Food Advertisement'
+            elif any(keyword in message for keyword in technology_keywords):
+                return 'Technology'
+            elif any(keyword in message for keyword in fashion_keywords):
+                return 'Faishon'
+            elif any(keyword in message for keyword in sports_keywords):
+                return 'Sports'
+            else:
+                return 'uncategorized'
+
+
     # Load the pre-trained model and vectorizer
         tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
         model = pickle.load(open('model2.pkl', 'rb'))
@@ -439,6 +487,7 @@ if selected == "Spam Message Detector":
 
         # Perform prediction
                 result = model.predict(vector_input)[0]
+                sector = categorize_sector(input_sms)
                 
                 # Store the data in Redis list
                 connection.lpush('messages', input_sms)
