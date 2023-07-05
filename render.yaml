@@ -2,6 +2,9 @@ databases:
   - name: spam_sleuth
     databaseName: spam_sleuth_b1qg
     user: spam_sleuth_b1qg_user
+    password: KnJ5vC3Rnrt3e6WWsAMWQszCDRDElcGd
+    host: dpg-ciihgb6nqql0tc45uo0g-a
+    port: 5432
 
  services:
  - type: pserv
