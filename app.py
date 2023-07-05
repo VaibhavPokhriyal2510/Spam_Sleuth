@@ -153,6 +153,7 @@ if selected == "Spam Message Detector":
     
     import os
     import redis
+    import time
 
     # Connect to your internal Redis instance using the REDIS_URL environment variable
     # The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
@@ -989,20 +990,16 @@ if selected == "Contact Us":
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################
 
 if selected == "Analysis":
-    import mysql.connector
+    import os
+    import redis
+
+    # Connect to your internal Redis instance using the REDIS_URL environment variable
+    # The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+    connection = redis.from_url(os.environ['REDIS_URL'])
+    
     import pandas as pd
     import plotly.graph_objects as go
     from streamlit_option_menu import option_menu 
-
-    conn = mysql.connector.connect (
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
-    )
-
-    c=conn.cursor ()
 
     def view_all_data():
         c.execute ('select * from messages')
