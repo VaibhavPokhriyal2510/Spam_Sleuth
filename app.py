@@ -1042,3 +1042,20 @@ if selected == "Analysis":
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     sector_counts = df_sectors['sectors'].value_counts()
     st.bar_chart(sector_counts)
+    
+
+    # Spam & non-spam distribution
+    spam_counts = df_results['results'].value_counts()
+    fig = go.Figure(data=[go.Pie(labels=spam_counts.index, values=spam_counts.values)])
+    st.plotly_chart(fig)
+
+
+    # Spam vs non-spam count by sector
+    spam_counts = df_messages[df_messages['is_spam'] == 1].groupby('sector')['is_spam'].count()
+    non_spam_counts = df_messages[df_messages['is_spam'] == 0].groupby('sector')['is_spam'].count()
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=spam_counts.index, y=spam_counts.values, name='Spam'))
+    fig.add_trace(go.Bar(x=non_spam_counts.index, y=non_spam_counts.values, name='Non-Spam'))
+    fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
+    st.plotly_chart(fig)
