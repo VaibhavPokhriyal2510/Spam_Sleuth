@@ -1030,12 +1030,12 @@ if selected == "Analysis":
     # Convert data to appropriate types
     messages = [msg.decode() for msg in messages]
     results = [eval(res.decode()) for res in results]
-    sectors = [eval(sec.decode()) for sec in sectors]
+    sectors = [sec.decode() for sec in sectors]
 
     # Convert data to pandas DataFrame
     df_messages = pd.DataFrame(messages, columns=["content"])
     df_results = pd.DataFrame(results)
-    df_sectors = pd.DataFrame(sectors)
+    df_sectors = pd.DataFrame(sectors, columns=["sectors"])
 
     # Streamlit Analysis
 
