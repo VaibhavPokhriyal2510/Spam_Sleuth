@@ -1028,12 +1028,12 @@ if selected == "Analysis":
     sectors = connection.lrange('sectors', 0, -1)
 
     # Convert data to appropriate types
-    messages = [eval(msg.decode()) for msg in messages]
+    messages = [msg.decode() for msg in messages]
     results = [eval(res.decode()) for res in results]
     sectors = [eval(sec.decode()) for sec in sectors]
 
     # Convert data to pandas DataFrame
-    df_messages = pd.DataFrame(messages, columns=["content", "is_spam", "sector"])
+    df_messages = pd.DataFrame(messages, columns=["content")
     df_results = pd.DataFrame(results)
     df_sectors = pd.DataFrame(sectors)
 
