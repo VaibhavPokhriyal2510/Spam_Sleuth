@@ -798,13 +798,16 @@ if selected == "IP Tracker":
         except ValueError:
             return None
 
+    geolocator = Nominatim(user_agent="myGeocoder")
     def get_pincode(latitude, longitude):
-        geolocator = Nominatim(user_agent="IP_Tracker")
-        location = geolocator.reverse((latitude, longitude))
-        address = location.raw["address"]
-        if "postcode" in address:
-            return address["postcode"]
-        return "Pincode not available"
+        try:
+            location = geolocator.reverse((latitude, longitude), exactly_one=True)
+            if location and 'postcode' in location.raw['address']:
+                return location.raw['address']['postcode']
+            else:
+                return "Pincode not found"
+        except Exception as e:
+            return f"Error: {str(e)}"
 
     # Custom CSS styles
     css = """
