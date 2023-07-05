@@ -300,12 +300,9 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
-                result_str = str(result)
-                sector_str = str(sector)
-                ip_str = str(input_sms)
-                connection.set('message', ip_str)
-                connection.set('result', result_str)
-                connection.set('sector', sector_str)
+                connection.set('message', input_sms)
+                connection.set('result', str(result))
+                connection.set('sector', sector)
 
         # Display the result
                 if result == 1:
