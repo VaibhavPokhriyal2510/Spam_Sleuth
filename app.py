@@ -1046,12 +1046,14 @@ if selected == "Analysis":
     
 
     # Spam & non-spam distribution
+    st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
     spam_counts = df_results['results'].value_counts()
     fig = go.Figure(data=[go.Pie(labels=spam_counts.index, values=spam_counts.values)])
     st.plotly_chart(fig)
 
 
     # Spam vs non-spam count by sector
+    st.markdown('<div class="banner">SPAM V/S NON-SPAM COUNT BY SECTOR</div>', unsafe_allow_html=True)
     spam_counts_by_sector = df_results[df_results['results'] == 1].merge(df_sectors, left_index=True, right_index=True)['sectors'].value_counts()
     non_spam_counts_by_sector = df_results[df_results['results'] == 0].merge(df_sectors, left_index=True, right_index=True)['sectors'].value_counts()
 
