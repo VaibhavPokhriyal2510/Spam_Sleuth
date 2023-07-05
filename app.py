@@ -1033,7 +1033,7 @@ if selected == "Analysis":
 
     # Convert data to pandas DataFrame
     df_messages = pd.DataFrame(messages, columns=["content"])
-    df_results = pd.DataFrame(results)
+    df_results = pd.DataFrame(results, columns=["results"])
     df_sectors = pd.DataFrame(sectors, columns=["sectors"])
 
     # Streamlit Analysis
