@@ -159,8 +159,6 @@ if selected == "Spam Message Detector":
     connection.set('key', 'redis-py')
     connection.get('key')
 
-    cursor = connection.cursor()
-
     st.markdown('<div style="display: flex; justify-content: center; align-items: center; background-color: #000000; color: white; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-size: 28px; font-family: Trebuchet MS; font-weight: bold; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">WELCOME TO SPAM MESSAGE DETECTOR</div>', unsafe_allow_html=True)
 
     add_selectbox = st.selectbox("Please select the type of message you want to detect.",
@@ -303,9 +301,9 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
-                query = "INSERT INTO messages (content, is_spam, sector) VALUES (%s, %s,%s)"
-                cursor.execute(query, (input_sms, result, sector))
-                connection.commit()
+                connection.set('message', input_sms)
+                connection.set('result', result)
+                connection.set('sector', sector)
 
         # Display the result
                 if result == 1:
