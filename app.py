@@ -1023,9 +1023,23 @@ if selected == "Analysis":
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     
     # Retrieve data from Redis
-    data = connection.lrange('messages', 0, -1)
-    result = [eval(d.decode()) for d in data]
-    df = pd.DataFrame(result, columns=["content", "is_spam", "sector"])
+    messages = connection.lrange('messages', 0, -1)
+    results = connection.lrange('results', 0, -1)
+    sectors = connection.lrange('sectors', 0, -1)
+
+    # Convert data to appropriate types
+    messages = [eval(msg.decode()) for msg in messages]
+    results = [eval(res.decode()) for res in results]
+    sectors = [eval(sec.decode()) for sec in sectors]
+
+    # Convert data to pandas DataFrame
+    df_messages = pd.DataFrame(messages, columns=["content", "is_spam", "sector"])
+    df_results = pd.DataFrame(results)
+    df_sectors = pd.DataFrame(sectors)
+
+    # Streamlit Analysis
+
+    # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
-    sector_counts = df['sector'].value_counts()
+    sector_counts = df_messages['sector'].value_counts()
     st.bar_chart(sector_counts)
