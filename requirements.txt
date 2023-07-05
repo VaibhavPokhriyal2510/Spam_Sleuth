@@ -11,3 +11,4 @@ mysql-connector-python
 plotly
 pymysql
 python-dotenv
+redis
