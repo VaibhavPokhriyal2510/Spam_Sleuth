@@ -156,9 +156,6 @@ if selected == "Spam Message Detector":
     # The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
     connection = redis.from_url(os.environ['REDIS_URL'])
 
-    connection.set('key', 'redis-py')
-    connection.get('key')
-
     st.markdown('<div style="display: flex; justify-content: center; align-items: center; background-color: #000000; color: white; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-size: 28px; font-family: Trebuchet MS; font-weight: bold; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">WELCOME TO SPAM MESSAGE DETECTOR</div>', unsafe_allow_html=True)
 
     add_selectbox = st.selectbox("Please select the type of message you want to detect.",
