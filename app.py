@@ -1033,30 +1033,31 @@ if selected == "Analysis":
     st.markdown(banner_css , unsafe_allow_html=True)
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>',
                 unsafe_allow_html=True)
+    # Retrieve data from Redis
+    data = connection.lrange('messages', 0, -1)
+    result = [eval(d.decode()) for d in data]
+    df = pd.DataFrame(result, columns=["content", "is_spam", "sector"])
+
+    # Sector distribution
     sector_counts = df['sector'].value_counts()
     st.bar_chart(sector_counts)
 
-    st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>',
-                unsafe_allow_html=True)
+    # Spam & non-spam distribution
     spam_counts = df['is_spam'].value_counts()
-
     fig = go.Figure(data=[go.Pie(labels=spam_counts.index, values=spam_counts.values)])
     st.plotly_chart(fig)
 
-    # Count the number of spam and non-spam messages for each sector
+    # Spam vs non-spam count by sector
     spam_counts = df[df['is_spam'] == 1].groupby('sector')['is_spam'].count()
     non_spam_counts = df[df['is_spam'] == 0].groupby('sector')['is_spam'].count()
 
-# Create a bar chart to visualize the spam and non-spam counts for each sector
     fig = go.Figure()
     fig.add_trace(go.Bar(x=spam_counts.index, y=spam_counts.values, name='Spam'))
     fig.add_trace(go.Bar(x=non_spam_counts.index, y=non_spam_counts.values, name='Non-Spam'))
-    st.markdown('<div class="banner">SPAM V/S NON-SPAM COUNT BY SECTOR</div>',
-                unsafe_allow_html=True)
     fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.plotly_chart(fig)
 
-    # Create a line graph to visualize the spam and non-spam counts for each sector
+    # Line graph for spam vs non-spam count by sector
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(
@@ -1079,4 +1080,4 @@ if selected == "Analysis":
     yaxis_title='Count',
     )
 
-    st.plotly_chart(fig)    
+    st.plotly_chart(fig)
