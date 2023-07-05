@@ -300,9 +300,14 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
-                connection.set('message', input_sms)
-                connection.set('result', str(result))
-                connection.set('sector', sector)
+
+                current_time = int(time.time())  # Get the current timestamp
+                message_key = f'message_{current_time}'
+                result_key = f'result_{current_time}'
+                sector_key = f'sector_{current_time}'
+                connection.set('message_key', input_sms)
+                connection.set('result_key', str(result))
+                connection.set('sector_key', sector)
 
         # Display the result
                 if result == 1:
