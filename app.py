@@ -1040,5 +1040,5 @@ if selected == "Analysis":
 
     # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
-    sector_counts = df_messages['sectors'].value_counts()
+    sector_counts = df_sectors['sectors'].value_counts()
     st.bar_chart(sector_counts)
