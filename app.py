@@ -148,15 +148,16 @@ if selected == "Home":
 ###########################################################################################################################################################################################################################################################################################################################
 
 if selected == "Spam Message Detector":
-    import pymysql
+    
+    import os
+    import redis
 
-    connection = pymysql.connect(
-    host='localhost',  # Replace with your host name
-    user='root',  # Replace with your username
-    password='',  # Replace with your password
-    database='Spam_Sleuth',  # Replace with your database name
-    port=3306
-    )
+    # Connect to your internal Redis instance using the REDIS_URL environment variable
+    # The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+    connection = redis.from_url(os.environ['REDIS_URL'])
+
+    connection.set('key', 'redis-py')
+    connection.get('key')
 
     cursor = connection.cursor()
 
