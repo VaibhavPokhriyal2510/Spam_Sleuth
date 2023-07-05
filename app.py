@@ -302,13 +302,10 @@ if selected == "Spam Message Detector":
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
 
-                current_time = int(time.time())  # Get the current timestamp
-                message_key = f'message_{current_time}'
-                result_key = f'result_{current_time}'
-                sector_key = f'sector_{current_time}'
-                connection.set('message_key', input_sms)
-                connection.set('result_key', str(result))
-                connection.set('sector_key', sector)
+                # Store the data in Redis list
+                connection.lpush('messages', input_sms)
+                connection.lpush('results', str(result))
+                connection.lpush('sectors', sector)
 
         # Display the result
                 if result == 1:
@@ -1001,13 +998,6 @@ if selected == "Analysis":
     import plotly.graph_objects as go
     from streamlit_option_menu import option_menu 
 
-    def view_all_data():
-        c.execute ('select * from messages')
-        data=c.fetchall ()
-        return data
-
-    result=view_all_data()
-    df=pd.DataFrame (result, columns=["content","is_spam","sector"])
     # Display a bar chart of the sector distribution
     banner_css = """
     <style>
