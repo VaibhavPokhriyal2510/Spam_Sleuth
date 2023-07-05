@@ -300,9 +300,12 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 sector = categorize_sector(input_sms)
-                connection.set('message', input_sms)
-                connection.set('result', result)
-                connection.set('sector', sector)
+                result_str = str(result)
+                sector_str = str(sector)
+                ip_str = str(input_sms)
+                connection.set('message', ip_str)
+                connection.set('result', result_str)
+                connection.set('sector', sector_str)
 
         # Display the result
                 if result == 1:
@@ -436,8 +439,7 @@ if selected == "Spam Message Detector":
         # Perform prediction
                 result = model.predict(vector_input)[0]
                 query = "INSERT INTO messages (content, is_spam) VALUES (%s, %s)"
-                cursor.execute(query, (input_sms, result))
-                connection.commit()
+        
 
         # Display the result
                 if result == 1:
@@ -481,7 +483,6 @@ if selected == "Spam Message Detector":
                     '<h1 class="not-spam-header">It\'s Not A Spam</h1>', unsafe_allow_html=True)
                     st.markdown(f"<p style='color: #00080a; font-size: 28px; font-weight: bold; text-align: center; padding: 10px; font-family: Trebuchet MS;background-color: #b9f6ca;border-radius: 5px;'>Categorized Sector: {sector}</p>", unsafe_allow_html=True)
 
-                connection.close()
 
 
 
