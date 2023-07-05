@@ -1033,7 +1033,7 @@ if selected == "Analysis":
     sectors = [eval(sec.decode()) for sec in sectors]
 
     # Convert data to pandas DataFrame
-    df_messages = pd.DataFrame(messages, columns=["content")
+    df_messages = pd.DataFrame(messages, columns=["content"])
     df_results = pd.DataFrame(results)
     df_sectors = pd.DataFrame(sectors)
 
