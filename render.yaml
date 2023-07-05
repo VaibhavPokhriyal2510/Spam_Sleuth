@@ -13,7 +13,7 @@ services:
     envVars:
       - key: postgres://spam_sleuth_b1qg_user:KnJ5vC3Rnrt3e6WWsAMWQszCDRDElcGd@dpg-ciihgb6nqql0tc45uo0g-a/spam_sleuth_b1qg
         fromDatabase:
-          name: mysite
+          name: spam_sleuth
           property: connectionString
       - key: POOL_MODE
         value: transaction
