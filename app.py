@@ -1,6 +1,7 @@
 from collections import Counter
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
+from opencage.geocoder import OpenCageGeocode
 import os
 import tempfile
 import streamlit as st
@@ -798,12 +799,17 @@ if selected == "IP Tracker":
         except ValueError:
             return None
 
-    geolocator = Nominatim(user_agent="myGeocoder")
+    # Set up the geocoder with your API key
+    api_key = "b2627cc451154fc68a4317e3359d0686"
+    geocoder = OpenCageGeocode(api_key)
+
+    # Function to get pincode from latitude and longitude
     def get_pincode(latitude, longitude):
         try:
-            location = geolocator.reverse((latitude, longitude), exactly_one=True)
-            if location and 'postcode' in location.raw['address']:
-                return location.raw['address']['postcode']
+            results = geocoder.reverse_geocode(latitude, longitude)
+            if results and 'components' in results[0]:
+                pincode = results[0]['components'].get('postcode', 'Pincode not found')
+                return pincode
             else:
                 return "Pincode not found"
         except Exception as e:
