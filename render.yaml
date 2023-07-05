@@ -8,7 +8,7 @@ services:
   - type: pserv
     name: pgbouncer
     runtime: docker
-    plan: standard
+    plan: free
     repo: https://github.com/render-oss/docker-pgbouncer
     envVars:
       - key: postgres://spam_sleuth_b1qg_user:KnJ5vC3Rnrt3e6WWsAMWQszCDRDElcGd@dpg-ciihgb6nqql0tc45uo0g-a/spam_sleuth_b1qg
