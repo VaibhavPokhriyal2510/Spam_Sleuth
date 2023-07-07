@@ -1204,7 +1204,10 @@ if selected == "Analysis":
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     sector_counts = df_sectors['sectors'].value_counts()
     sector_data = pd.DataFrame({'Sector': sector_counts.index, 'Count': sector_counts.values})
-    st.bar_chart(sector_data.set_index('Sector').rename(columns={'Count': 'Count'}, index={'Sector': 'Sector'}))
+    chart = st.bar_chart(sector_data.set_index('Sector').rename(columns={'Count': 'Count', 'Sector': 'Sector'}))
+    chart.update_xaxes(title='Sector')
+    chart.update_yaxes(title='Count')
+
 
 
     import plotly.express as px
