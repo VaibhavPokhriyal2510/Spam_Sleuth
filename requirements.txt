@@ -14,3 +14,4 @@ python-dotenv
 redis
 urllib3<2.0
 opencage==1.2.2
+matplotlib
