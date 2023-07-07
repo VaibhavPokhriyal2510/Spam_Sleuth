@@ -15,4 +15,4 @@ redis
 urllib3<2.0
 opencage==1.2.2
 matplotlib
-plotly-express==0.5.0
+plotly-express
