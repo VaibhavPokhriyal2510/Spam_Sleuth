@@ -1201,6 +1201,8 @@ if selected == "Analysis":
     # Streamlit Analysis
 
     import seaborn as sns
+    import matplotlib.pyplot as plt
+
 
     # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
