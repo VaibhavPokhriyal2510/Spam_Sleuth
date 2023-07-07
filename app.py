@@ -547,6 +547,7 @@ st.markdown(
 #################################################################################################################################################################################################################################################################################################################################################################################################
 
 
+
 if selected == "Email Header Analyzer":
     # Custom CSS styles
     custom_css = """
@@ -658,8 +659,8 @@ if selected == "Email Header Analyzer":
         with open(filename, "wb") as f:
             f.write(part.get_payload(decode=True))
 
-    def analyze_email(email_content):
-        msg = email.message_from_string(email_content)
+    def analyze_email(header_text):
+        msg = email.message_from_string(header_text)
 
         # Extract header details
         message_id, from_address, to_address, cc_address, bcc_address, date, subject, arc_result = extract_header_details(
@@ -700,7 +701,13 @@ if selected == "Email Header Analyzer":
     # Display the banner
     st.markdown('<div class="banner">WELCOME TO EMAIL HEADER ANALYZER</div>',
                 unsafe_allow_html=True)
-    st.markdown(
+    
+
+    add_selectbox = st.selectbox("Please select",
+    ("None","Upload File", "Paste Header Message"),index=0)
+
+    if add_selectbox == "Upload File":
+        st.markdown(
         """
         <style>
         .spam-headers {
@@ -715,83 +722,162 @@ if selected == "Email Header Analyzer":
         }
         </style>
         """, unsafe_allow_html=True)
-    st.markdown('<p class="spam-headers">STEPS TO DOWNLOAD THE EMAIL HEADER<br><br>1.In Gmail, click on any email.<br> 2.At the top-right of the email display, click on the 3 dots to show more options.<br> 3.Select Show original. This opens a new web browser tab showing the mail with the complete email header.<br> 4.Click download original. <br> 5.Please convert your .eml file to .txt file for analysis</p>', unsafe_allow_html=True)
+        st.markdown('<p class="spam-headers">STEPS TO COPY EMAIL HEADER TEXT AND ANALYZE:<br><br>1. Open the email.<br> 2. Click on the 3 dots at the top-right of the email display.<br> 3. Select "Show original" to view the email header text.<br> 4. Copy the entire header text.<br> 5. Paste the header text in the text box below for analysis.</p>', unsafe_allow_html=True)
 
-    uploaded_file = st.file_uploader(
+        uploaded_file = st.file_uploader(
         "Upload an email file [Please convert your .eml file to .txt file for analysis]", type=['txt'])
-    if uploaded_file is not None:
-        email_content = uploaded_file.read().decode('utf-8')
-        message_id, from_address, to_address, cc_address, bcc_address, date, subject, arc_result, spf_status, dmarc_status, dkim_status, ip_addresses, attachments = analyze_email(
+        if uploaded_file is not None:
+            email_content = uploaded_file.read().decode('utf-8')
+            message_id, from_address, to_address, cc_address, bcc_address, date, subject, arc_result, spf_status, dmarc_status, dkim_status, ip_addresses, attachments = analyze_email(
             email_content)
 
         # Display the header details
-        st.markdown('<div class="banner">Header Details</div>',
+            st.markdown('<div class="banner">Header Details</div>',
                     unsafe_allow_html=True)
-        header_data = [{'Field': 'Message ID', 'Value': message_id},
+            header_data = [{'Field': 'Message ID', 'Value': message_id},
                        {'Field': 'From', 'Value': from_address},
                        {'Field': 'To', 'Value': to_address},
                        {'Field': 'CC', 'Value': cc_address},
                        {'Field': 'Date', 'Value': date},
                        {'Field': 'Subject', 'Value': subject},
                        {'Field': 'ARC Authentication Result', 'Value': arc_result}]
-        st.table(header_data)
+            st.table(header_data)
 
         # Display the authentication status
-        st.markdown('<div class="banner">Authentication Status</div>',
+            st.markdown('<div class="banner">Authentication Status</div>',
                     unsafe_allow_html=True)
-        auth_data = [{'Authentication Mechanism': 'SPF', 'Status': 'Pass' if spf_status else 'Fail'},
+            auth_data = [{'Authentication Mechanism': 'SPF', 'Status': 'Pass' if spf_status else 'Fail'},
                      {'Authentication Mechanism': 'DMARC',
                          'Status': 'Pass' if dmarc_status else 'Fail'},
                      {'Authentication Mechanism': 'DKIM', 'Status': 'Pass' if dkim_status else 'Fail'}]
-        st.table(auth_data)
+            st.table(auth_data)
 
         # Display the sender information
-        from_domain = re.search('@[\w.-]+', from_address).group()
-        st.markdown('<div class="banner">Sender Information</div>',
+            from_domain = re.search('@[\w.-]+', from_address).group()
+            st.markdown('<div class="banner">Sender Information</div>',
                     unsafe_allow_html=True)
-        st.write('From Domain:', from_domain)
+            st.write('From Domain:', from_domain)
 
         # Display the IP addresses
-        st.markdown('<div class="banner">IP Addresses</div>',
+            st.markdown('<div class="banner">IP Addresses</div>',
                     unsafe_allow_html=True)
-        if ip_addresses:
-            ip_data = {'IP': [], 'IP Version': []}
-            for ip in ip_addresses:
-                try:
-                    ip_version = ipaddress.ip_address(ip).version
-                    ip_data['IP'].append(ip)
-                    ip_data['IP Version'].append(f'IPv{ip_version}')
-                except ValueError:
-                    ip_data['IP'].append(ip)
-                    ip_data['IP Version'].append('Invalid')
-            st.table(ip_data)
-        else:
-            st.write('No IP addresses found in the email header.')
+            if ip_addresses:
+                ip_data = {'IP': [], 'IP Version': []}
+                for ip in ip_addresses:
+                    try:
+                        ip_version = ipaddress.ip_address(ip).version
+                        ip_data['IP'].append(ip)
+                        ip_data['IP Version'].append(f'IPv{ip_version}')
+                    except ValueError:
+                        ip_data['IP'].append(ip)
+                        ip_data['IP Version'].append('Invalid')
+                st.table(ip_data)
+            else:
+                st.write('No IP addresses found in the email header.')
 
         # Display the BCC recipients
-        st.markdown('<div class="banner">BCC Recipients</div>',
+            st.markdown('<div class="banner">BCC Recipients</div>',
                     unsafe_allow_html=True)
-        if bcc_address:
-            bcc_recipients = bcc_address.split(',')
-            st.write(bcc_recipients)
-        else:
-            st.write('No BCC recipients found in the email header.')
+            if bcc_address:
+                bcc_recipients = bcc_address.split(',')
+                st.write(bcc_recipients)
+            else:
+                st.write('No BCC recipients found in the email header.')
 
         # Display the attachments
-        st.markdown('<div class="banner">Attachments</div>',
+            st.markdown('<div class="banner">Attachments</div>',
                     unsafe_allow_html=True)
-        if attachments:
-            for attachment in attachments:
-                st.write(attachment)
+            if attachments:
+                for attachment in attachments:
+                    st.write(attachment)
         # Create a download link for each attachment
-                href = f"data:text/plain;charset=utf-8,{urllib.parse.quote(attachment)}"
-                st.markdown(
+                    href = f"data:text/plain;charset=utf-8,{urllib.parse.quote(attachment)}"
+                    st.markdown(
                     f'<a href="{href}" download="{attachment}">Download {attachment}</a>',
                     unsafe_allow_html=True)
-            st.markdown(
-                '<div class="download-message">Please Click The Link To Download Your Attachment(s).</div>', unsafe_allow_html=True)
-        else:
-            st.write('No attachments found in the email.')
+                st.markdown(
+                '<div class="download-message">Your Attachment(s) Have Been Downloaded. Please Check Your Folder.</div>', unsafe_allow_html=True)
+            else:
+                st.write('No attachments found in the email.')
+
+    if add_selectbox == "Paste Header Message":
+        header_text = st.text_area("Paste the email header text here", height=250)
+        if st.button("Analyze"):
+            if header_text:
+                message_id, from_address, to_address, cc_address, bcc_address, date, subject, arc_result, spf_status, dmarc_status, dkim_status, ip_addresses, attachments = analyze_email(
+                header_text)
+
+            # Display the header details
+                st.markdown('<div class="banner">Header Details</div>',
+                        unsafe_allow_html=True)
+
+                header_data = [{'Field': 'Message ID', 'Value': message_id},
+                           {'Field': 'From', 'Value': from_address},
+                           {'Field': 'To', 'Value': to_address},
+                           {'Field': 'CC', 'Value': cc_address},
+                           {'Field': 'Date', 'Value': date},
+                           {'Field': 'Subject', 'Value': subject},
+                           {'Field': 'ARC Authentication Result', 'Value': arc_result}]
+                st.table(header_data)
+
+            # Display the authentication status
+                st.markdown('<div class="banner">Authentication Status</div>',
+                        unsafe_allow_html=True)
+                auth_data = [{'Authentication Mechanism': 'SPF', 'Status': 'Pass' if spf_status else 'Fail'},
+                         {'Authentication Mechanism': 'DMARC',
+                          'Status': 'Pass' if dmarc_status else 'Fail'},
+                         {'Authentication Mechanism': 'DKIM', 'Status': 'Pass' if dkim_status else 'Fail'}]
+                st.table(auth_data)
+
+            # Display the sender information
+                from_domain = re.search('@[\w.-]+', from_address).group()
+                st.markdown('<div class="banner">Sender Information</div>',
+                        unsafe_allow_html=True)
+                st.write('From Domain:', from_domain)
+
+            # Display the IP addresses
+                st.markdown('<div class="banner">IP Addresses</div>',
+                        unsafe_allow_html=True)
+                if ip_addresses:
+                    ip_data = {'IP': [], 'IP Version': []}
+                    for ip in ip_addresses:
+                        try:
+                            ip_version = ipaddress.ip_address(ip).version
+                            ip_data['IP'].append(ip)
+                            ip_data['IP Version'].append(f'IPv{ip_version}')
+                        except ValueError:
+                            ip_data['IP'].append(ip)
+                            ip_data['IP Version'].append('Invalid')
+                    st.table(ip_data)
+                else:
+                    st.write('No IP addresses found in the email header.')
+
+            # Display the BCC recipients
+                st.markdown('<div class="banner">BCC Recipients</div>',
+                        unsafe_allow_html=True)
+                if bcc_address:
+                    bcc_recipients = bcc_address.split(',')
+                    st.write(bcc_recipients)
+                else:
+                    st.write('No BCC recipients found in the email header.')
+
+            # Display the attachments
+                st.markdown('<div class="banner">Attachments</div>',
+                        unsafe_allow_html=True)
+                if attachments:
+                    for attachment in attachments:
+                        st.write(attachment)
+                    # Create a download link for each attachment
+                        href = f"data:text/plain;charset=utf-8,{urllib.parse.quote(attachment)}"
+                        st.markdown(
+                        f'<a href="{href}" download="{attachment}">Download {attachment}</a>',
+                        unsafe_allow_html=True)
+                    st.markdown(
+                    '<div class="download-message">Please Click The Link To Download Your Attachment(s).</div>', unsafe_allow_html=True)
+                else:
+                    st.write('No attachments found in the email.')
+            else:
+                st.write('Please paste the email header text for analysis.')
 
 
 ############################################################################################################################################################################################################################################################################################################################
