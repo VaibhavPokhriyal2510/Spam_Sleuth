@@ -74,7 +74,7 @@ with st.sidebar:
     selected = option_menu(
         menu_title=None,
         options=["Home", "Spam Message Detector",
-                 "Email Header Analyzer", "IP Tracker", "IP Lookup", "Analysis","Contact Us"],
+                 "Email Header Analyzer", "IP Tracker", "Domain Lookup", "Analysis","Contact Us"],
         default_index=0,
         menu_icon="cast"
     )
@@ -236,31 +236,43 @@ if selected == "Spam Message Detector":
 
 
         def categorize_sector(message):
-    # Convert the message to lowercase for case-insensitive matching
+            # Convert the message to lowercase for case-insensitive matching
             message = message.lower()
 
-    # Define keywords for each sector
-            educational_keywords = ['education', 'learn', 'study', 'school','Academic' ,'Degree', 'Institution', 'Education', 'Assessment', 'Certification', 'Coaching', 'Course', 'Course']
+            # Define keywords for each sector
+            educational_keywords = ['education', 'learn', 'study', 'school', 'Academic', 'Degree', 'Institution', 'Education', 'Assessment', 'Certification', 'Coaching', 'Course', 'Course']
             medical_keywords = ['health', 'doctor', 'hospital', 'medicine']
             business_keywords = ['business', 'company', 'entrepreneur', 'product']
             advertisement_keywords = ['promotion', 'discount', 'sale', 'offer']
-            travel_keywords=['travel', 'vacation', 'holiday', 'tourism', 'hotel', 'flight', 'destination', 'explore']
-            food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry','order']
+            travel_keywords = ['travel', 'vacation', 'holiday', 'tourism', 'hotel', 'flight', 'destination', 'explore']
+            food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry', 'order']
             technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
             fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
             sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
-            # Add 10 more words to each sector
-            educational_keywords.extend(['scholarship', 'online', 'university', 'studyabroad', 'academic', 'knowledge', 'classroom', 'homework', 'lecture', 'assignment'])
-            medical_keywords.extend(['healthcare', 'wellbeing', 'pharmaceutical', 'medicalresearch', 'medicine', 'wellness', 'patientcare', 'preventive', 'disease', 'rehabilitation'])
-            business_keywords.extend(['entrepreneurship', 'investor', 'leadership', 'management', 'businessgrowth', 'marketanalysis', 'startup', 'entrepreneurial', 'businessplan', 'innovation'])
-            advertisement_keywords.extend(['discounts', 'exclusiveoffers', 'shopping', 'limitedtime', 'clearance', 'dealoftheday', 'promotional', 'marketingcampaign', 'brandpromotion', 'shopnow'])
-            travel_keywords.extend(['traveldestination', 'adventure', 'holidaypackage', 'touristattraction', 'travelguide', 'exploretheworld', 'travelagency', 'sightseeingtour', 'vacationrental', 'traveler'])
-            food_keywords.extend(['restaurantreview', 'cookingtips', 'foodblog', 'culinaryarts', 'foodphotography', 'foodlover', 'tastetest', 'foodculture', 'foodcritic', 'foodtrend'])
-            technology_keywords.extend(['innovativetechnology', 'datascience', 'programmingskills', 'techindustry', 'networksecurity', 'artificialintelligence', 'cybersecurity', 'digitaltransformation', 'technologytrends', 'cloudcomputing'])
-            fashion_keywords.extend(['fashiondesigner', 'fashionshow', 'luxuryfashion', 'fashionaccessories', 'fashionblogger', 'fashionindustry', 'stylingtips', 'fashionweek', 'fashionbrand', 'fashioninspiration'])
-            sports_keywords.extend(['sportsmanship', 'sportstraining', 'sportsnutrition', 'sportsinjury', 'sportspsychology', 'sportsperformance', 'sportscoach', 'sportsfan', 'sportsenthusiast', 'sportsevent'])
 
-    # Check if any keyword is present in the message
+            # Add phrases to each keyword list
+            educational_keywords.extend(['online education', 'academic institution', 'study abroad', 'knowledge assessment', 'certification course', 'coaching program'])
+            medical_keywords.extend(['healthcare industry', 'medical research', 'wellness and wellbeing', 'preventive medicine', 'patient care'])
+            business_keywords.extend(['entrepreneurship', 'business management', 'market analysis', 'startup development', 'business innovation'])
+            advertisement_keywords.extend(['promotional offers', 'limited-time discounts', 'shopping deals', 'marketing campaigns', 'brand promotion'])
+            travel_keywords.extend(['travel destination', 'holiday package', 'tourist attraction', 'travel guide', 'sightseeing tour'])
+            food_keywords.extend(['restaurant reviews', 'cooking tips', 'food blogging', 'culinary arts', 'delicious recipes'])
+            technology_keywords.extend(['innovative technology', 'data science', 'programming skills', 'network security', 'artificial intelligence'])
+            fashion_keywords.extend(['fashion design', 'style trends', 'fashion accessories', 'fashion blogging', 'fashion industry'])
+            sports_keywords.extend(['sports training', 'fitness exercises', 'athlete performance', 'sports competitions', 'stadium events'])
+    
+            # Remove similar texts from the keywords
+            educational_keywords = list(set(educational_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            medical_keywords = list(set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            business_keywords = list(set(business_keywords) - set(educational_keywords) - set(medical_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            advertisement_keywords = list(set(advertisement_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            travel_keywords = list(set(travel_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            food_keywords = list(set(food_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
+            technology_keywords = list(set(technology_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(fashion_keywords) - set(sports_keywords))
+            fashion_keywords = list(set(fashion_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(sports_keywords))
+            sports_keywords = list(set(sports_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords))
+
+            # Check if any keyword is present in the message
             if any(keyword in message for keyword in educational_keywords):
                 return 'Educational'
             elif any(keyword in message for keyword in medical_keywords):
@@ -282,7 +294,7 @@ if selected == "Spam Message Detector":
             else:
                 return 'uncategorized'
 
-    # Load the pre-trained model and vectorizer
+        # Load the pre-trained model and vectorizer
         tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
         model = pickle.load(open('model2.pkl', 'rb'))
 
@@ -1009,7 +1021,7 @@ if selected == "IP Tracker":
                 "<div class='error'>Please enter a valid IP address.</div>", unsafe_allow_html=True)
 
 ############################################################################################################################################################################################################################################################################################################################
-if selected == "IP Lookup":
+if selected == "Domain Lookup":
     def get_ip_address(email_address):
         # Extract the domain from the email address
         domain = email_address.split("@")[1]
@@ -1190,13 +1202,16 @@ if selected == "Analysis":
     # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     sector_counts = df_sectors['sectors'].value_counts()
+    fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.bar_chart(sector_counts)
     
 
     # Spam & non-spam distribution
     st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
     spam_counts = df_results['results'].value_counts()
-    fig = go.Figure(data=[go.Pie(labels=spam_counts.index, values=spam_counts.values)])
+    labels = ['Spam', 'Non-Spam']
+    values = [spam_counts[True], spam_counts[False]]
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
     st.plotly_chart(fig)
 
 
