@@ -1214,9 +1214,6 @@ if selected == "Analysis":
     plt.xlabel('Sector')
     plt.ylabel('Count')
 
-    # Display the chart
-    st.pyplot()
-
 
 
 
