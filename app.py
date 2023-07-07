@@ -1211,11 +1211,10 @@ if selected == "Analysis":
     st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
     spam_counts = df_results['results'].value_counts()
     labels = ['Spam', 'Non-Spam']
-    values = [spam_counts[True], spam_counts[False]]
+    values = [spam_counts.get(True, 0), spam_counts.get(False, 0)]
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-    fig.update_traces(textposition='inside', textinfo='percent+label')
-    fig.update_layout(title='Distribution of Spam and Non-Spam Emails')
     st.plotly_chart(fig)
+
 
 
 
