@@ -1203,7 +1203,7 @@ if selected == "Analysis":
     # Sector distribution
     st.markdown('<div class="banner">SECTOR DISTRIBUTION</div>', unsafe_allow_html=True)
     sector_counts = df_sectors['sectors'].value_counts()
-    fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
+    sector_counts.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.bar_chart(sector_counts)
 
     # Spam & non-spam distribution
