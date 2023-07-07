@@ -1218,6 +1218,7 @@ if selected == "Analysis":
 
 
 
+
     # Spam vs non-spam count by sector
     st.markdown('<div class="banner">SPAM V/S NON-SPAM COUNT BY SECTOR</div>', unsafe_allow_html=True)
     spam_counts_by_sector = df_results[df_results['results'] == 1].merge(df_sectors, left_index=True, right_index=True)['sectors'].value_counts()
