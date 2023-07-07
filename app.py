@@ -1211,7 +1211,7 @@ if selected == "Analysis":
     spam_counts = df_results['results'].value_counts()
     labels = ['Spam', 'Non-Spam']
     values = [spam_counts.get(True, 0), spam_counts.get(False, 0)]
-    fig = go.Figure(data=[plotly.graph_objects.Pie(labels=labels, values=values)])
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
     st.plotly_chart(fig)
 
 
