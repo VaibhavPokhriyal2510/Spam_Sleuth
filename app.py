@@ -128,7 +128,7 @@ if selected == "Home":
     st.markdown(banner_css + content_css, unsafe_allow_html=True)
 
     # Display the banner
-    st.markdown('<div class="banner">WELCOME TO SPAM SLEUTH</div>',
+    st.markdown('<div class="banner">WELCOME TO EMAIL SPAM SLEUTH</div>',
                 unsafe_allow_html=True)
     
     st.markdown(
@@ -146,6 +146,7 @@ if selected == "Home":
         }
         </style>
         """, unsafe_allow_html=True)
+    st.markdown('<p class="spam-headers">For better appearance chnage system's theme to light.Steps are given below:<br><br>1.Select Start<br> 2.Go to Settings.<br> 3.Select Personalization.<br> 4.Select Colors. <br>5.In the list for Choose your color, select light.',unsafe_allow_html=True)
     st.markdown('<p class="spam-headers">1.Spam Mail Detector:The Spam Mail Detector is a powerful tool designed to identify and classify spam emails. It leverages advanced algorithms and machine learning techniques to analyze various aspects of an email, including the header, content, and attachments. By using the Spam Mail Detector, forensic investigators can efficiently filter out spam emails from legitimate ones, saving time and resources in their investigations.<br><br> 2.Email Header Analyzer:The Email Header Analyzer is a valuable tool for forensic investigators to extract and analyze critical information from email headers. Email headers contain vital metadata, including sender and recipient details, timestamps, message IDs, and authentication results. By using the Email Header Analyzer, investigators can uncover valuable insights, such as the source of the email, authentication status, and potential indicators of malicious activity.<br><br> 3.IP Tracker:The IP Tracker tool enables forensic investigators to track and trace the origin and geographical location of an IP address. By analyzing the IP address associated with suspicious activities, investigators can gain valuable information about the potential source of an attack or unauthorized access. The IP Tracker tool provides geolocation data, ISP information, and other relevant details that assist in identifying and apprehending cybercriminals.<br><br>4.IP Lookup:The IP Lookup tool is an essential resource for forensic investigators to gather information about an IP address\'s ownership and historical data. By performing an IP lookup, investigators can identify the organization or individual associated with an IP address, along with contact details and network information. This helps investigators in establishing connections, conducting further investigations, and building a comprehensive profile of potential suspects or sources of malicious activity.<br><br> With the combined capabilities of the Spam Mail Detector, Email Header Analyzer, IP Tracker, and IP Lookup tools, forensic investigators have a robust suite of resources at their disposal to conduct thorough investigations, uncover evidence, and track down cybercriminals. These tools streamline the forensic process, enhance efficiency, and provide valuable insights that contribute to the successful resolution of cases.',unsafe_allow_html=True)
 
 ###########################################################################################################################################################################################################################################################################################################################
@@ -1204,7 +1205,6 @@ if selected == "Analysis":
     sector_counts = df_sectors['sectors'].value_counts()
     fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.bar_chart(sector_counts)
-    
 
     # Spam & non-spam distribution
     st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
@@ -1212,7 +1212,10 @@ if selected == "Analysis":
     labels = ['Spam', 'Non-Spam']
     values = [spam_counts[True], spam_counts[False]]
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+    fig.update_layout(title='Distribution of Spam and Non-Spam Emails')
     st.plotly_chart(fig)
+
 
 
     # Spam vs non-spam count by sector
