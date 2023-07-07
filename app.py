@@ -1206,13 +1206,19 @@ if selected == "Analysis":
     sector_data = pd.DataFrame({'Sector': sector_counts.index, 'Count': sector_counts.values})
     st.bar_chart(sector_data.set_index('Sector'))
 
+    import matplotlib.pyplot as plt
+
     # Spam & non-spam distribution
     st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
     spam_counts = df_results['results'].value_counts()
     labels = ['Spam', 'Non-Spam']
     values = [spam_counts.get(True, 0), spam_counts.get(False, 0)]
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-    st.plotly_chart(fig)
+
+    fig, ax = plt.subplots()
+    ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')
+
+    st.pyplot(fig)
 
 
     # Spam vs non-spam count by sector
