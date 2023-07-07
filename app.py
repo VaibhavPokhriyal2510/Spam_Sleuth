@@ -1214,12 +1214,8 @@ if selected == "Analysis":
     labels = ['Spam', 'Non-Spam']
     values = [spam_counts.get(True, 0), spam_counts.get(False, 0)]
 
-    fig, ax = plt.subplots()
-    ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')
-
-    st.pyplot(fig)
-
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+    st.plotly_chart(fig)
 
     # Spam vs non-spam count by sector
     st.markdown('<div class="banner">SPAM V/S NON-SPAM COUNT BY SECTOR</div>', unsafe_allow_html=True)
