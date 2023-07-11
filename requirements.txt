@@ -20,4 +20,3 @@ seaborn
 hashlib
 python-magic
 pandas
-requests
