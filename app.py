@@ -74,7 +74,7 @@ with st.sidebar:
     selected = option_menu(
         menu_title=None,
         options=["Home", "Spam Message Detector",
-                 "Email Header Analyzer", "IP Tracker", "Domain Lookup", "Analysis","Contact Us"],
+                 "Email Header Analyzer","Attachment Analysis", "IP Tracker", "Domain Lookup", "Analysis","Contact Us"],
         default_index=0,
         menu_icon="cast"
     )
@@ -1236,3 +1236,188 @@ if selected == "Analysis":
     fig.add_trace(go.Bar(x=non_spam_counts_by_sector.index, y=non_spam_counts_by_sector.values, name='Non-Spam'))
     fig.update_layout(barmode='stack', xaxis_title='Sector', yaxis_title='Count')
     st.plotly_chart(fig)
+
+
+
+
+
+########################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+if selected == "Attachment Analysis":
+    import streamlit as st
+    import hashlib
+    import magic
+    import os
+    import pandas as pd
+    import requests
+    import tempfile
+
+
+    # Custom CSS styles for the banner
+    banner_css = """
+    <style>
+    .banner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000000;
+        color: white;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-size: 28px;
+        font-family: Trebuchet MS;
+        font-weight: bold;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    </style>
+    """
+
+    # Custom CSS styles for the main content
+    content_css = """
+    <style>
+    .content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F5F5F5;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .result-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+    </style>
+    """
+
+    # Render the custom CSS styles
+    st.markdown(banner_css + content_css, unsafe_allow_html=True)
+
+    # Display the banner
+    st.markdown('<div class="banner">WELCOME TO ATTACHMENT ANALYSIS</div>',
+            unsafe_allow_html=True)
+
+
+    def main():
+
+        # User Input
+        uploaded_file = st.file_uploader("Upload an attachment")
+
+        if uploaded_file is not None:
+            analyze_attachment(uploaded_file)
+
+
+    def analyze_attachment(uploaded_file):
+        # Save the file to a temporary location
+        temp_file_path = os.path.join(tempfile.gettempdir(), uploaded_file.name)
+        with open(temp_file_path, "wb") as temp_file:
+            temp_file.write(uploaded_file.getvalue())
+
+        # Calculate MD5 hash
+        md5_hash = hashlib.md5()
+        with open(temp_file_path, "rb") as file:
+            for chunk in iter(lambda: file.read(4096), b""):
+                md5_hash.update(chunk)
+        md5 = md5_hash.hexdigest()
+
+        # Determine file type
+        file_type = magic.from_file(temp_file_path)
+
+        # Analyze file with VirusTotal API or other analysis techniques
+        # Replace 'YOUR_API_KEY' with your actual VirusTotal API key
+        api_key = 'e4ea9ebcdda6f37be94a3e3200bca1affb0751dfe61ab6b58a417e5c6fb35680'
+        url = f"https://www.virustotal.com/api/v3/files/{md5}"
+        headers = {'x-apikey': api_key}
+        response = requests.get(url, headers=headers)
+        analysis_result = response.json()
+
+        # Extract required information from analysis_result
+        md5_hash = analysis_result['data']['attributes']['md5']
+        file_type = analysis_result['data']['attributes']['type_description']
+        file_size = analysis_result['data']['attributes']['size']
+        times_submitted = analysis_result['data']['attributes']['times_submitted']
+        total_votes = analysis_result['data']['attributes']['total_votes']
+        last_modification_date = analysis_result['data']['attributes']['last_modification_date']
+        last_submission_date = analysis_result['data']['attributes']['last_submission_date']
+        first_submission_date = analysis_result['data']['attributes']['first_submission_date']
+        last_analysis_date = analysis_result['data']['attributes']['last_analysis_date']
+        unique_sources = analysis_result['data']['attributes']['unique_sources']
+        ssdeep = analysis_result['data']['attributes']['ssdeep']
+        sha256 = analysis_result['data']['attributes']['sha256']
+        sha1 = analysis_result['data']['attributes']['sha1']
+        meaningful_name = analysis_result['data']['attributes']['meaningful_name']
+        reputation = analysis_result['data']['attributes']['reputation']
+
+        # Extract analysis results from antivirus engines
+        antivirus_results = analysis_result['data']['attributes']['last_analysis_results']
+
+
+        # Create a table to display the analysis results
+        table_data = [
+            ["MD5 Hash", md5_hash],
+            ["File Type", file_type],
+            ["File Size", f"{file_size} bytes"],
+            ["Times Submitted", str(times_submitted)],
+            ["Total Votes (Harmless/Malicious)", f"Harmless: {total_votes['harmless']}, Malicious: {total_votes['malicious']}"],
+            ["Last Modification Date", str(last_modification_date)],
+            ["Last Submission Date", str(last_submission_date)],
+            ["First Submission Date", str(first_submission_date)],
+            ["Last Analysis Date", str(last_analysis_date)],
+            ["Unique Sources", str(unique_sources)],
+            ["SSDeep", ssdeep],
+            ["SHA256", sha256],
+            ["SHA1", sha1],
+            ["Meaningful Name", meaningful_name],
+            ["Reputation", str(reputation)]
+        ]
+
+        # Display the table
+        st.table(pd.DataFrame(table_data, columns=['Attribute', 'Value']))
+
+
+        # Display the banner
+        st.markdown('<div class="banner">Analysis Results From The Antiviruses</div>',
+            unsafe_allow_html=True)
+
+        # Create a table to display antivirus results
+        table_data = []
+
+        for engine, result in antivirus_results.items():
+            category = result['category']
+            engine_name = result['engine_name']
+            engine_version = result['engine_version']
+            detection_result = result.get('result')
+            if detection_result is None:
+                detection_result = "Unknown"
+            table_data.append([engine_name.strip(), detection_result.strip(), category.strip()])
+
+        # Display the table without indices
+        st.table(pd.DataFrame(table_data, columns=['Antivirus Engine', 'Result', 'Category']))
+
+
+        # Clean up the temporary file
+        os.remove(temp_file_path)
+
+
+    if __name__ == "__main__":
+        main()
+
