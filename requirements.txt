@@ -17,3 +17,7 @@ opencage==1.2.2
 matplotlib
 plotly-express
 seaborn
+hashlib
+python-magic
+pandas
+requests
