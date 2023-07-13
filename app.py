@@ -81,6 +81,22 @@ with st.sidebar:
     st.sidebar.markdown("---")
     st.sidebar.image("small.png", use_column_width=True)
 
+def perform_health_check():
+    url = "https://spam-sleuth.onrender.com"  
+    response = requests.get(url)
+    if response.status_code == 200:
+        st.write("")
+    else:
+        st.write("")
+
+def main():
+    while True:
+        perform_health_check()
+        time.sleep(500)  
+
+if __name__ == "__main__":
+    main()
+
 
 if selected == "Home":
 
