@@ -249,7 +249,7 @@ if selected == "Spam Message Detector":
             food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry', 'order']
             technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
             fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
-            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'training', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
+            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'tournament', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
 
             # Add phrases to each keyword list
             educational_keywords.extend(['online education', 'academic institution', 'study abroad', 'knowledge assessment', 'certification course', 'coaching program'])
