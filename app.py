@@ -1190,7 +1190,7 @@ if selected == "Analysis":
     st.markdown('<div class="banner">SPAM & NON-SPAM DISTRIBUTION</div>', unsafe_allow_html=True)
     spam_counts = df_results['results'].value_counts()
 
-    fig = px.pie(names=['Spam', 'Non-Spam'], values=spam_counts.values)
+    fig = px.pie(names=['Non-Spam', 'Spam'], values=spam_counts.values)
     st.plotly_chart(fig)
 
     # Spam vs non-spam count by sector
