@@ -235,65 +235,32 @@ if selected == "Spam Message Detector":
     # Render the custom CSS styles
         st.markdown(banner_css + content_css, unsafe_allow_html=True)
 
-
         def categorize_sector(message):
             # Convert the message to lowercase for case-insensitive matching
             message = message.lower()
 
-            # Define keywords for each sector
-            educational_keywords = ['education', 'learn', 'study', 'school', 'Academic', 'Degree', 'Institution', 'Education', 'Assessment', 'Certification', 'Coaching', 'Course', 'Course']
-            medical_keywords = ['health', 'doctor', 'hospital', 'medicine']
-            business_keywords = ['business', 'company', 'entrepreneur', 'product']
-            advertisement_keywords = ['promotion', 'discount', 'sale', 'offer']
-            travel_keywords = ['travel', 'vacation', 'holiday', 'tourism', 'hotel', 'flight', 'destination', 'explore']
-            food_keywords = ['food', 'restaurant', 'recipe', 'cook', 'cuisine', 'menu', 'delicious', 'tasty', 'hungry', 'order']
-            technology_keywords = ['technology', 'software', 'hardware', 'computer', 'programming', 'digital', 'innovation', 'network', 'internet', 'gadget', 'tech', 'data', 'coding', 'development', 'app', 'artificialintelligence', 'web', 'technology', 'device', 'algorithm']
-            fashion_keywords = ['fashion', 'clothing', 'style', 'design', 'accessories', 'trend', 'apparel', 'dress', 'outfit', 'fashionable', 'model', 'runway', 'fabric', 'couture', 'fashionista', 'brand', 'shopping', 'collection', 'garment', 'stylish']
-            sports_keywords = ['sports', 'fitness', 'exercise', 'athletics', 'game', 'tournament', 'sporting', 'athlete', 'workout', 'physical', 'sport', 'champion', 'play', 'stadium', 'sportsmanship', 'active', 'fitness', 'athlete']
+            # Define keywords for each sector as a dictionary
+            sectors_keywords = {
+                'Advertisement': ['promotion', 'discount', 'sale', 'advertising', 'marketing', 'campaign', 'advertisement', 'branding', 'publicity', 'exposure', 'commercial', 'brand', 'product', 'promote', 'consumer', 'target', 'media', 'advertise', 'promotionalsale', 'discountoffer', 'marketingstrategy', 'brandpromotion', 'advertisementcampaign', 'promotionalmaterial', 'advertisingagency', 'brandidentity', 'productlaunch', 'advertisementmedium', 'targetaudience', 'advertisementbanner', 'advertisementplatform', 'promotionalevent', 'marketingcampaign', 'advertisementchannel', 'promotionalvideo', 'advertisementplacement', 'promotionalmerchandise', 'advertisementslogan', 'marketingtactics', 'advertisementposter', 'promotionalcampaign', 'advertisingsales', 'brandpromotion', 'promotionalemail', 'advertisementdisplay', 'promotionaldeal', 'advertisingmaterial', 'brandingstrategy', 'promotionaleffort', 'advertisementbudget', 'marketingexpert', 'promotionalstrategy', 'advertisementsuccess', 'digitalmarketing', 'marketresearch', 'advertisingcampaign', 'advertorial', 'promotionaloffer', 'brandawareness', 'advertisementtool', 'productpromotion', 'advertisementtrends', 'marketingconsultant', 'advertisingmedium', 'promotionstrategies', 'advertisementagency', 'advertisementservices', 'brandingcampaign', 'promotionaleffectiveness', 'marketinginnovation', 'brandidentity', 'advertisement success', 'promotional poster', 'advertising effectiveness', 'order', 'delivery'],
 
-            # Add phrases to each keyword list
-            educational_keywords.extend(['online education', 'academic institution', 'study abroad', 'knowledge assessment', 'certification course', 'coaching program'])
-            medical_keywords.extend(['healthcare industry', 'medical research', 'wellness and wellbeing', 'preventive medicine', 'patient care'])
-            business_keywords.extend(['entrepreneurship', 'business management', 'market analysis', 'startup development', 'business innovation'])
-            advertisement_keywords.extend(['promotional offers', 'limited-time discounts', 'shopping deals', 'marketing campaigns', 'brand promotion'])
-            travel_keywords.extend(['travel destination', 'holiday package', 'tourist attraction', 'travel guide', 'sightseeing tour'])
-            food_keywords.extend(['restaurant reviews', 'cooking tips', 'food blogging', 'culinary arts', 'delicious recipes'])
-            technology_keywords.extend(['innovative technology', 'data science', 'programming skills', 'network security', 'artificial intelligence'])
-            fashion_keywords.extend(['fashion design', 'style trends', 'fashion accessories', 'fashion blogging', 'fashion industry'])
-            sports_keywords.extend(['sports training', 'fitness exercises', 'athlete performance', 'sports competitions', 'stadium events'])
-    
-            # Remove similar texts from the keywords
-            educational_keywords = list(set(educational_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            medical_keywords = list(set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            business_keywords = list(set(business_keywords) - set(educational_keywords) - set(medical_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            advertisement_keywords = list(set(advertisement_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            travel_keywords = list(set(travel_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            food_keywords = list(set(food_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(technology_keywords) - set(fashion_keywords) - set(sports_keywords))
-            technology_keywords = list(set(technology_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(fashion_keywords) - set(sports_keywords))
-            fashion_keywords = list(set(fashion_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(sports_keywords))
-            sports_keywords = list(set(sports_keywords) - set(educational_keywords) - set(medical_keywords) - set(business_keywords) - set(advertisement_keywords) - set(travel_keywords) - set(food_keywords) - set(technology_keywords) - set(fashion_keywords))
+                'Sports': ['sports', 'fitness', 'exercise', 'athletics', 'game', 'competition', 'sporting', 'athlete', 'workout', 'physical', 'champion', 'play', 'stadium', 'athlete', 'team', 'sportsman', 'coach', 'tournament', 'fitness', 'performance', 'athlete', 'fitness', 'referee', 'sportswear', 'sportsenthusiast', 'sportsperformance', 'sports analytics', 'sports journalism', 'sports industry', 'sports fan', 'sports equipment', 'sports academy', 'sportsclub', 'sports coaching', 'sports physiotherapy', 'sportsmedicine', 'sportsnutrition', 'sports recovery', 'sportspsychology', 'sportsinjury', 'sports analysis', 'sports broadcasting', 'sports sponsorship', 'sports competition', 'sports entertainment', 'sportsmanagement', 'sportsmotivation', 'sportsmarketing', 'sportsnetwork', 'sports personality', 'sports media', 'sportsleague', 'sports training', 'sports championship', 'sports achievement', 'sports career', 'sportsentertainment', 'sportspsychologist', 'sportsclinic', 'sportsdata', 'sports development', 'sportsequipment', 'sportsjournalist', 'sportslaw', 'sportsleadership', 'sportsmanagement', 'sportsnutritionist', 'sportsofficial', 'sportscaster', 'sportsscientist', 'sports performance', 'sportspsychologist', 'sportsrehabilitation', 'sportssponsor', 'sportsstatistician', 'sportstrainer', 'sportsagent', 'sportsanalysis', 'sports blogging', 'sports branding', 'sports broadcasting', 'sports coach', 'sports communication', 'sportscommunity', 'sportscompetition', 'sportscoverage', 'sportsentertainment', 'sportsenthusiast', 'sportsgear', 'sportsgoals', 'sportshero', 'sportsinjury', 'sportsinspiration', 'sportsleague', 'sportsman', 'sportsmanship', 'sportsmedal', 'sportsmeet', 'sportsmentor', 'sportsmoments', 'sportsmovement', 'sportsnutrition', 'sportsorganization', 'sportspassion', 'sportsperson', 'sportspodcast', 'sportspower', 'sportsprofessional', 'sportsprogram', 'sportspromotion', 'sportsprotection', 'sportsrecreation', 'sportsreporter', 'sportsrivalry', 'sportsscholarship', 'sportsseason', 'sportsskills', 'sportssponsorship', 'sportsstrategy', 'sportsstrategies', 'sportssupport', 'sportsteams', 'sportstechnique', 'sportstournaments', 'sportstraining', 'sportsvictory', 'sportswear', 'sportszone'],
 
-            # Check if any keyword is present in the message
-            if any(keyword in message for keyword in educational_keywords):
-                return 'Educational'
-            elif any(keyword in message for keyword in medical_keywords):
-                return 'Medical'
-            elif any(keyword in message for keyword in business_keywords):
-                return 'Business'
-            elif any(keyword in message for keyword in advertisement_keywords):
-                return 'Advertisement'
-            elif any(keyword in message for keyword in travel_keywords):
-                return 'Travel'
-            elif any(keyword in message for keyword in food_keywords):
-                return 'Food Advertisement'
-            elif any(keyword in message for keyword in technology_keywords):
-                return 'Technology'
-            elif any(keyword in message for keyword in fashion_keywords):
-                return 'Faishon'
-            elif any(keyword in message for keyword in sports_keywords):
-                return 'Sports'
-            else:
-                return 'uncategorized'
+                'Medical': ['health', 'doctor', 'hospital', 'medicine', 'patient', 'medical', 'diagnosis', 'treatment', 'clinic', 'pharmacy', 'surgery', 'wellness', 'nurse', 'therapist', 'biomedical', 'vaccination', 'recovery', 'healthcare', 'paramedic', 'emergency', 'medication', 'disease', 'surgery', 'medicalprocedure', 'healthylifestyle', 'medicalprofessional', 'medicaldevice', 'wellbeing', 'preventivemedicine', 'medicalresearch', 'medicalscience', 'healthinsurance', 'medicalspecialist', 'medicalpractice', 'healthcondition', 'medicalconsultation', 'medicaltherapy', 'medicalknowledge', 'medicaldiagnostic', 'medicalcenter', 'medicalrecord', 'healthcheckup', 'medicaltreatment', 'medicalconsultant', 'medicalfaculty', 'healthscience', 'medicalfield', 'medicaljournal', 'healtheducation', 'medicaltechnology', 'medicalcare', 'medicalassessment', 'healthmonitoring', 'medicaltraining', 'healthcareprovider', 'medicalstudy', 'healthawareness', 'medicalcase', 'medicalhistory', 'healthsupport', 'medicalinstrument', 'medicalassociation', 'medicalexam', 'medicalhistory', 'medicalconsultation', 'medicaltraining', 'medicalfacility', 'medicalnews', 'medicalbreakthrough', 'medicalpractice', 'medicalconsulting', 'medicaltherapy', 'medicalguidelines', 'medicalservice', 'medicalinstitute', 'medicalcouncil', 'medicalsymposium', 'medicalrecord', 'medicaldiagnosis', 'medicalmission', 'medicalpublication', 'medicalspecialty', 'medicalprofession', 'medicaltechnician', 'medicalprofessionals', 'medicalappointment', 'medicalrehabilitation', 'medicalscreening', 'medicalsymptoms', 'medicaladvancements', 'medicaltherapies', 'medicalprogress', 'medicaltreatment', 'medicalconsultancy', 'medicalprotocols', 'medicalimaging', 'medicaljournalism', 'medicalresearcher', 'medicalstudy', 'medicalvolunteer', 'medicalstudent', 'medicalsupport', 'medicalcheckup', 'medicalconsult', 'medicalprescription', 'medicalbreakthrough', 'medicalaid', 'medicalvolunteering', 'medicalorganization'],
+
+                'Educational': ['education', 'students', 'institution', 'institutions', 'student', 'authors', 'learn', 'study', 'school', 'academic', 'degree', 'institution', 'assessment', 'certification', 'coaching', 'course', 'tutoring', 'knowledge', 'lecture', 'academy', 'research', 'learning', 'educator', 'intellectual', 'workshop', 'curriculum', 'library', 'classroom', 'training', 'online', 'tutor', 'student', 'lecture', 'educational', 'lesson', 'instructor', 'studyabroad', 'elearning', 'educationalinstitution', 'educationalprogram', 'intellect', 'pedagogy', 'educationaltechnology', 'educationalresources', 'academicprogram', 'educationaltools', 'learningmaterials', 'academicresearch', 'educationalpolicy', 'educationaldevelopment', 'educationalcontent', 'educationalinitiative', 'educationalorganization', 'educationalopportunity', 'educationalreform', 'educationalconsultant', 'educationalleadership', 'educationalmethodology', 'educationaltherapy', 'educationalpsychology', 'educationalcounseling', 'educationalphilosophy', 'educationaltrends', 'educationsector', 'educationalframework', 'educationalprogress', 'educationalplatform', 'educationalcurriculum', 'educationalinstitute', 'educationaltool', 'educationalmaterials', 'educationalresearch', 'educationalplan', 'educationalresources', 'educationalapproach', 'educationalpractice', 'educationalcompetencies', 'educationalassessment', 'educationalenrichment', 'educationalpractice', 'educationalinstruction', 'educationalassessment', 'educationalenrichment', 'educationalaccomplishments', 'educationalimpacts', 'educationalpolicy', 'educationalauthorities', 'educationalauthority', 'educationalcontent', 'educationalimpact', 'educationalactivities', 'educationalgrowth', 'educationalforum', 'educationalbenefits', 'educationalstrategies', 'educationalmethods', 'educationalneeds', 'educationalinstitutions', 'educationalleaders', 'educationalplatforms', 'educationalcontributions', 'educationalconferences', 'educationalguidance', 'educationalstandards', 'educationalparticipation', 'educationalassessment', 'educationalresources', 'educationalfacilities', 'educationalawareness', 'educationalinitiatives', 'educationalenrichment', 'educationalprograms', 'educationalaccomplishments', 'educationalpolicies']
+            }
+
+            # Initialize a variable to store the detected sector
+            detected_sector = None
+
+            # Loop through the sectors and check for keywords in the message
+            for sector, keywords in sectors_keywords.items():
+                if any(keyword in message for keyword in keywords):
+                    detected_sector = sector
+                    break
+
+            # If no sector is matched, return 'Unknown'
+            return detected_sector if detected_sector else 'Uncategorized'
 
         # Load the pre-trained model and vectorizer
         tfidf = pickle.load(open('vectorizer2.pkl', 'rb'))
